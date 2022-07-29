@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ko"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v9.1.5 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+
+  <meta name="robots" content="noindex">
+
+
+
+  
+    
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>왜 Spring을 사용할까? | 애송이 개발 블로그</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="왜 Spring을 사용할까?" />
+<meta name="author" content="Muhyeun Park" />
+<meta property="og:locale" content="ko_KR, en_US" />
+<meta name="description" content="Why Spring?" />
+<meta property="og:description" content="Why Spring?" />
+<link rel="canonical" href="https://parkmuhyeun.github.io/study/spring/2022-01-26-Spring(1)/" />
+<meta property="og:url" content="https://parkmuhyeun.github.io/study/spring/2022-01-26-Spring(1)/" />
+<meta property="og:site_name" content="애송이 개발 블로그" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="왜 Spring을 사용할까?" />
+<script type="application/ld+json">
+{"headline":"왜 Spring을 사용할까?","dateModified":"2022-04-03T14:40:59+00:00","url":"https://parkmuhyeun.github.io/study/spring/2022-01-26-Spring(1)/","datePublished":"2022-01-26T00:00:00+00:00","author":{"@type":"Person","name":"Muhyeun Park"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://parkmuhyeun.github.io/study/spring/2022-01-26-Spring(1)/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://parkmuhyeun.github.io/assets/img/logo.jpg"},"name":"Muhyeun Park"},"description":"Why Spring?","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="spring,springboot,java,jpa">
+  
+
+
+
+  <meta name="theme-color" content="rgb(8,46,57)">
+
+
+<!-- tipuesearch -->
+<link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+<script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="애송이 개발 블로그">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="application-name" content="애송이 개발 블로그">
+
+<meta name="generator" content="Hydejack v9.1.5" />
+
+
+<link rel="alternate" href="https://parkmuhyeun.github.io/study/spring/2022-01-26-Spring(1)/" hreflang="ko-kr, en-us">
+
+<link type="application/atom+xml" rel="alternate" href="https://parkmuhyeun.github.io/feed.xml" title="애송이 개발 블로그" />
+
+
+<link rel="shortcut icon"    href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+
+<link rel="manifest" href="/assets/site.webmanifest">
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+<link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG">
+
+
+
+
+
+
+<script>!function(r,c){"use strict";function a(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=c.createElement("script");n.src=e,t&&a(n,"load",t,{once:!0});t=c.scripts[0];return t.parentNode.insertBefore(n,t),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=c.createElement("script");function o(){r._loaded=!0,t&&a(n,"load",t,{once:!0});var e=c.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():a(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){a(c.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}}(window,document);
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+!function(w) {
+  w._baseURL = '/';
+  w._publicPath = '/assets/js/';
+  w._noPushState = false;
+  w._noDrawer = false;
+  w._noNavbar = false;
+  w._noToc = false;
+  w._noSearch = false;
+  w._search = {
+    DATA_URL: '/assets/sitedata.json?no-cache',
+    STORAGE_KEY: 'mini-search/',
+    INDEX_KEY: 'index--2022-04-03T14:49:07+00:00',
+  };
+  w._clapButton = true;
+}(window);</script>
+
+
+<script async src="/assets/bower_components/MathJax/es5/tex-mml-chtml.js" id="_MathJax"></script>
+
+
+<!--[if gt IE 8]><!---->
+
+  
+
+
+
+
+<link rel="stylesheet" href="/assets/css/hydejack-9.1.5.css" id="_stylePreload">
+<link rel="stylesheet" href="/assets/icomoon/style.css" id="_iconsPreload">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap" id="_fontsPreload">
+
+
+
+  <style id="_pageStyle">
+
+html{--accent-color: rgb(79,177,186);--accent-color-faded: rgba(79,177,186,0.5);--accent-color-highlight: rgba(79,177,186,0.1);--accent-color-darkened: #409ba3;--theme-color: rgb(8,46,57)}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+
+</head>
+
+<body class="no-break-layout">
+  
+
+
+<hy-push-state
+  id="_pushState"
+  replace-selector="#_main"
+  link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)"
+  script-selector="script"
+  duration="500"
+  hashchange
+>
+  
+  
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <span class="sr-only">Jump to:</span>
+    <div class="nav-btn-bar">
+      <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <div class="nav-span"></div> -->
+
+      <!--상단메뉴 카테고리들 -->
+      <div class="top-menu">
+        
+            
+                
+                    <a 
+                    id="_drawer--opened"
+                    href="/about/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    About
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/project/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Project
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/study/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Study
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/etc/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Etc
+                    </a>
+            
+        
+      </div>
+
+      <!-- 검색 tipuesearch -->
+      <div class="nav-span">
+        <form action="/search">
+          <div class="tipue_search_left">
+            <img src="/assets/tipuesearch/search.png" class="tipue_search_icon">
+          </div>
+          <div class="tipue_search_right">
+            <input type="text" name="q" id="tipue_search_input"  placeholderpattern=".{1,}" title="At least 1 characters" required>
+          </div>
+          <div style="clear: both;"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+  <main
+  id="_main"
+  class="content layout-post"
+  role="main"
+>
+  <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+    <li><a href="/">home</a></li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/">study</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/spring/">spring</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          <span>2022-01-26-Spring(1)</span>
+        
+      </li>
+    
+  
+</ul></nav>
+  
+
+
+
+
+
+
+
+
+
+
+<article id="post-study-spring-Spring(1)" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title flip-project-title">
+      
+        왜 Spring을 사용할까?
+      
+    </h1>
+
+    <div class="post-date">
+      
+      <span class="ellipsis mr1">
+        <time datetime="2022-01-26T00:00:00+00:00">26 Jan 2022</time> in <a href="/study/" class="flip-title">study</a> / <a href="/spring/" class="flip-title">Spring</a> on <span>Java</span>, <span>Spring</span>
+      </span>
+      
+    </div>
+
+    
+    
+
+    
+
+
+
+  
+    <p class="note-sm" >
+      Why Spring?
+
+    </p>
+  
+
+
+  </header>
+
+  
+    <h2 id="spring은-왜-만들었나">Spring은 왜 만들었나?</h2>
+<ul>
+  <li>스프링은 자바 언어 기반의 프레임워크</li>
+  <li>자바 언어의 가장 큰 특징 - 객체 지향 언어</li>
+  <li>스프링은 객체 지향 언어가 가진 특징을 가장 잘 살려내는 프레임워크</li>
+  <li>스프링은 좋은 객체 지향 애플리케이션을 개발할 수 있게 도와주는 프레임워크</li>
+</ul>
+
+<p>tmi: 옛날 옛적 EJB(Enterprise Java Beans)라는 기술이 있었지만 너무 어렵고 복잡하고 느렸다. 그래서 더 단순하고 사용하기 좋게만들어서 Spring을 만들게 됬는데… 더 궁금하면 검색해보자</p>
+
+<h2 id="객체-지향-프로그래밍">객체 지향 프로그래밍?</h2>
+<p>자꾸 객체 지향 프로그래밍이라는데 그래서 그게 뭐야??</p>
+<ul>
+  <li>객체 지향 프로그래밍은 컴퓨터 프로그램을 명령어의 목록으로 보는 시각에서 벗어나 여러개의 독립된 단위, 즉 개체들의 모임으로 파악하는 것이다.</li>
+  <li>객체 지향 프로그래밍은 프로그램을 유연하고 변경에 용이하게 만들기 때문에 대규모 소프트웨어 개발에 많이 사용된다.</li>
+</ul>
+
+<h2 id="다형성polymorphism">다형성(Polymorphism)</h2>
+<p>객체 지향 프로그래밍 특징 중 다형성을 알아보자</p>
+
+<hr />
+<h3 id="다형성이란">다형성이란?</h3>
+<p>다형성이란 하나의 객체가 여러 가지 타입을 가질 수 있는 것을 의미한다</p>
+
+<hr />
+
+<p>자동차로 비유를 들어보자</p>
+
+<p><img src="/assets/img/blog/study/spring/Spring(1)_1.PNG" alt="img" /></p>
+
+<p>우선 역활과 구현으로 세상을 구분할 필요가 있다. 자동차라는 역활(인터페이스)이 있고 그걸 구현한 K3, 아반떼, 테슬라 모델3(구현체)들이 있다. 생각해보자 만약에 운전자가 자동차가 새로 나올때마다 그 자동차의 운전방식을 알아야 된다면 얼마나 불편한가.. 하지만 위와 같이 설계를 함으로 써 K3, 아반떼, 테슬라 모델3 각각의 운전 방식을 알 필요가 없고 자동차라는 역활의 운전 방식만 알면 된다!</p>
+
+<h3 id="역활과-구현을-분리">역활과 구현을 분리</h3>
+<ul>
+  <li>역활과 구현으로 구분하면 세상이 단순해지고, 유연해지며 변경도 편리해진다.</li>
+  <li>장점
+    <ul>
+      <li>클라이언트는 대상의 역활(인터페이스)만 알면 된다.</li>
+      <li>클라이언트는 구현 대상의 내부 구조를 몰라도 된다.</li>
+      <li>클라이언트는 구현 대상의 내부 구조가 변경되어도 영향을 받지 않는다.</li>
+      <li>클라이언트는 구현 대상 자체를 변경해도 영향을 받지 않는다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="자-이걸-자바-언어에서는-어떻게-사용할-수-있을까">자 이걸 자바 언어에서는 어떻게 사용할 수 있을까?</h3>
+<ul>
+  <li>자바 언어의 다형성을 활용
+    <ul>
+      <li>역활 = 인터페이스</li>
+      <li>구현 = 인터페이스를 구현한 클래스, 구현 객체</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/assets/img/blog/study/spring/Spring(1)_2.PNG" alt="img" /></p>
+
+<ul>
+  <li>MemberRepository interface의 메서드를 각 MemoryMemberRepository, JdbcMemberRepository에 오버라이딩</li>
+  <li>다형성으로 인터페이스를 구현한 객체를 실행 시점에 유연하게 변경 (MemoryMemberRepository or JdbcMemberRepository)</li>
+</ul>
+
+<h3 id="다형성의-본질">다형성의 본질</h3>
+<ul>
+  <li>인터페이스를 구현한 객체 인스턴스를 실행 시점에 유연하게 변경할 수 있다.</li>
+  <li>즉, 클라이언트를 변경하지 않고, 서버의 구현 기능을 유연하게 변경할 수 있다.</li>
+  <li>확장 가능한 설계</li>
+</ul>
+
+<p>-&gt; 인터페이스를 안정적으로 잘 설계하는 것이 중요</p>
+
+<h3 id="스프링과-객체-지향">스프링과 객체 지향</h3>
+<ul>
+  <li>스프링은 다형성을 극대화해서 이용할 수 있게 도와준다.</li>
+  <li>스프링에서 이야기하는 제어의 역전(IoC), 의존관계 주입(DI)은 다형성을 활용해서 역활과 구현을 편리하게 다룰 수 있도록 도와준다.
+    <ul>
+      <li>제어의 역전과 의존관계 주입을 몰라도 걱정하지 말자. 뒷 post들에서 설명할테니</li>
+    </ul>
+  </li>
+</ul>
+
+<p>스프링과 객체 지향 설계에 대해 제대로 이해하려면 다형성 외에 한가지 더 알아야 된다. 바로 SOLID… 면접에도 자주 나온다고 하니 잘 공부해두자</p>
+
+<h2 id="좋은-객체-지향-설계의-5가지-원칙solid">좋은 객체 지향 설계의 5가지 원칙(SOLID)</h2>
+<p>클린코드로 유명한 로버트 마틴이 좋은 객체 지향 설계의 5가지 원칙을 정리</p>
+<ul>
+  <li>SRP: 단일 책임 원칙(Single Responsibility Principle)</li>
+  <li>OCP: 개방-폐쇄 원칙(Open/Closed Principle)</li>
+  <li>LSP: 리스코프 치환 원칙(Liskov Substitution Principle)</li>
+  <li>ISP: 인터페이스 분리 원칙(Interface segregation Principle)</li>
+  <li>DIP: 의존관계 역전 원칙(Dependency Inversion Principle)</li>
+</ul>
+
+<h3 id="srp-단일-책임-원칙single-responsibility-principle">SRP 단일 책임 원칙(Single Responsibility Principle)</h3>
+<ul>
+  <li>하나의 클래스는 하나의 책임만 가져야 한다.</li>
+  <li>그런데 하나의 책임이라는 것은 너무 모호하다.
+    <ul>
+      <li>클 수도 있고, 작을 수 도 있다.</li>
+      <li>문맥과 상황에 따라 다르다.</li>
+    </ul>
+  </li>
+  <li>중요한 기준은 변경이다. 변경이 있을때 파급 효과가 적으면 단일 책임 원칙을 잘 따르는 것</li>
+  <li>예) UI 변경, 객체의 생성과 사용을 분리</li>
+</ul>
+
+<h3 id="ocp-개방-폐쇄-원칙openclosed-principle">OCP 개방 폐쇄 원칙(Open/Closed Principle)</h3>
+<ul>
+  <li>소프트웨어 요소는 확장에는 열려 있으나 변경에는 닫혀 있어야 한다.</li>
+  <li>그런데 언뜻 생각하면 확장을 하려면 당연히 기존코드를 변경해야 확장을 하지 아니면 어떻게 변경해?? 라고 이런 모순적인 말이 어딨나 생각이 든다.</li>
+  <li>다형성을 잘 활용하면 이 개방 폐쇄 원칙을 지킬 수 있다.</li>
+  <li>지금까지 배운 역활과 구현의 분리를 써서 인터페이스를 구현한 새로운 클래스를 하나 만들어서 새로운 기능을 구현
+    <ul>
+      <li>예를들어 MemberRepository를 구현한 MemoryMemberRepository만 있다고 할때 거기에 JdbcMemberRepository를 새로 구현하더라도 전혀 기존의 코드를 변경하지 않고 확장을 할 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="그런데-문제점이-있다">그런데 문제점이 있다</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 기존코드</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MemberService</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">MemberRepository</span> <span class="n">memberRepository</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MemoryMemberRepository</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">// 변경코드</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MemberService</span> <span class="o">{</span>
+  <span class="c1">// private MemberRepository memberRepository = new MemoryMemberRepository();</span>
+  <span class="kd">private</span> <span class="nc">MemberRepository</span> <span class="n">memberRepository</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JdbcMemberRepository</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>MemberService에서 구현 클래스를 직접 선택할 때
+    <ul>
+      <li>MemberRepository m = new MemoryMemberRepository(); //기존 코드</li>
+      <li>MemberRepository m = new JdbcMemberRepository(); //변경 코드</li>
+    </ul>
+  </li>
+  <li>구현 객체를 변경하려면 기존의 코드를 변경해야 한다.</li>
+  <li>분명 다형성을 사용했지만 OCP 원칙을 지킬 수 없다.</li>
+  <li>어떻게 해결?
+    <ul>
+      <li>객체를 생성하고, 별도의 연관관계를 맺어주는 설정자가 필요
+        <ul>
+          <li>그게 바로 Spring! (어떻게 적용하는지는 뒤로가면서 천천히 알아보자)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="lsp-리스코프-치환-원칙liskov-substitution-principle">LSP 리스코프 치환 원칙(Liskov Substitution Principle)</h3>
+<ul>
+  <li>프로그램의 객체는 프로그램의 정확성을 깨뜨리지 않으면서 하위의 인스턴스로 변경이 가능해야 한다.</li>
+  <li>다형성에서 하위 클래스는 인터페이스 규약을 다 지켜야 한다는 것, 다형성을 지원하기 위한 원칙, 인터페이스를 구현한 구현체는 믿고 사용하려면, 이 원칙이 필요</li>
+  <li>예) 자동차 인터페이스의 엑셀은 앞으로 가라는 기능, 뒤로 가게 구현하면 LSP 위반, 느리더라도 앞으로 가야한다.</li>
+</ul>
+
+<h3 id="isp-인터페이스-분리-원칙interface-segregation-principle">ISP 인터페이스 분리 원칙(Interface Segregation Principle)</h3>
+<ul>
+  <li>특정 클라이언트를 위한 인터페이스 여러개가 범용의 인터페이스 하나보다 낫다</li>
+  <li>자동차 인터페이스 -&gt; 운전 인터페이스, 정비 인터페이스</li>
+  <li>사용자 클라이언트 -&gt; 운전자 클라이언트, 정비사 클라이언트</li>
+  <li>분리하면 정비 인터페이스 자체가 변해도 운전자 클라이언트에 영향을 주지 않음</li>
+  <li>인터페이스가 더 명확해지고 대체 가능성이 높아진다.</li>
+</ul>
+
+<h3 id="dip-의존관계-역전-원칙dependency-inversion-principle">DIP 의존관계 역전 원칙(Dependency Inversion Principle)</h3>
+<ul>
+  <li>프로그래머는 추상화에 의존해야지 구현체에 의존하면 안된다.</li>
+  <li>쉽게 말해서 구현 클래스에 의존하지 말고 인터페이스에 의존하라는 뜻</li>
+  <li>클라이언트가 인터페이스에 의존해야 유연하게 구현체를 변경할 수 있다. 구현체에 의존하게 되면 변경이 매우 어려워짐.</li>
+  <li>그런데 OCP에서 설명한 MemberService는 인터페이스에 의존하지만, 구현 클래스도 동시에 의존한다. (의존한다는 것은 내가 저 코드를 안다는 것)
+    <ul>
+      <li>DIP 위반</li>
+    </ul>
+  </li>
+</ul>
+
+<p>-&gt; 객체 지향의 핵심은 다형성이라는데 다형성 만으로는 OCP, DIP를 지킬 수 없다. 뭔가 더 필요하다…</p>
+
+<h2 id="객체-지향-설계와-스프링">객체 지향 설계와 스프링</h2>
+<p>스프링 공부하러 왔는데 스프링 얘기는 언제해..? 지금까지는 스프링을 위한 빌드업이라 보면 된다.</p>
+<ul>
+  <li>스프링은 다음 기술로 다형성 + OCP/DIP를 가능하게 지원
+    <ul>
+      <li>DI(Dipendency Injection): 의존관계, 의존성 주입</li>
+      <li>DI 컨테이너 제공</li>
+    </ul>
+  </li>
+  <li>클라이언트의 코드 변경 없이 기능 확장</li>
+</ul>
+
+<p>빌드업은 끝났으니 다음 글부터 본격적으로 설명하겠다.</p>
+
+<h3 id="정리">정리</h3>
+<ul>
+  <li>모든 설계에 역활과 구현을 분리하자.</li>
+  <li>이상적으로는 모든 설계에 인터페이스를 부여하자</li>
+  <li>하지만 실무에서는 굉장히 고민이 되는게 인터페이스를 도입하면 추상화라는 비용이 발생한다.</li>
+  <li>기능을 확장할 가능성이 없다면, 구체 클래스를 직접 사용하고, 향후 꼭 필요할 때 리팩터링해서 인터페이스를 도입하는 것도 방법이다.</li>
+</ul>
+
+<hr />
+
+<p>참고:
+<a href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8">Spring Core</a></p>
+
+<p>*틀린 부분이 있으면 언제든지 말씀해 주시면 공부해서 수정하겠습니다.</p>
+
+  
+</article>
+
+
+
+  <hr class="dingbat related mb6" />
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T765T1JLEW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T765T1JLEW');
+</script>
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr-bottom">
+    About
+  </h2>
+
+  <p>반갑습니다. 백엔드 개발자 박무현입니다.</p>
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+  <aside class="related mb4" role="complementary">  <h2 class="hr-bottom">Related Posts</h2>  <ul class="related-posts">                  <li class="h4">  <a href="/study/http%20web/2022-04-03-Uri-Webbrowser/" class="flip-title"><span>Uri-Webbrowser</span></a>  <time class="faded fine" datetime="2022-04-03T00:00:00+00:00">03 Apr 2022</time></li>                        <li class="h4">  <a href="/study/http%20web/2022-03-27-Internet-Network/" class="flip-title"><span>Internet Network</span></a>  <time class="faded fine" datetime="2022-03-27T00:00:00+00:00">27 Mar 2022</time></li>                        <li class="h4">  <a href="/study/spring/2022-03-11-Spring(7)/" class="flip-title"><span>빈 생명주기 콜백</span></a>  <time class="faded fine" datetime="2022-03-11T00:00:00+00:00">11 Mar 2022</time></li>            </ul></aside>
+
+  
+
+  
+  
+
+  
+    
+<aside class="comments related" role="complementary">
+  <h2>Comments</h2>
+  <script src="https://utteranc.es/client.js"
+        repo="parkmuhyeun/blog-comments-repo"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</aside>
+
+
+  
+
+
+  
+<footer class="content" role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2022. All rights reserved.
+</small></p>
+  
+    <p><small>Powered by 애송이</small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+  <hy-drawer
+  id="_drawer"
+  class=""
+  side="left"
+  threshold="10"
+  noscroll
+  
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+
+
+
+
+<div class="sidebar-bg sidebar-overlay" style="background-color:rgb(8,46,57);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+  <div class="sidebar-about">
+    
+    <div class="sidebar-title" style="margin-bottom: 45px;">
+      <a class="sidebar-title" href="/"><h2 class="h1">애송이 개발 블로그</h2></a>
+    </div>
+  
+    
+      <a class="no-hover" href="/" tabindex="-1">
+        <img src="/assets/img/logo.jpg" class="avatar" alt="애송이 개발 블로그" width="120" height="120" loading="lazy" />
+      </a>
+    
+    
+    
+      <p class="">
+        끊임없이 생각하고 나아가는 개발자
+
+      </p>
+    
+  </div>
+
+  <nav class="sidebar-nav heading" role="navigation">
+    <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_drawer--opened"
+          href="/about/"
+          class="sidebar-nav-item "
+          
+        >
+          About
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/project/"
+          class="sidebar-nav-item "
+          
+        >
+          Project
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/study/"
+          class="sidebar-nav-item "
+          
+        >
+          Study
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/etc/"
+          class="sidebar-nav-item "
+          
+        >
+          Etc
+        </a>
+      </li>
+    
+  
+</ul>
+
+  </nav>
+
+  <div>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fparkmuhyeun.github.io&count_bg=%23005666&title_bg=%23464964&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+  </div>
+
+  
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+  
+</div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+</hy-push-state>
+
+
+  <!--[if gt IE 10]><!---->
+  <script nomodule>!function(){var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())}();
+</script>
+  <script src="/assets/js/hydejack-9.1.5.js" type="module"></script>
+  <script src="/assets/js/LEGACY-hydejack-9.1.5.js" nomodule defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'G-T765T1JLEW', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementById('_pushState');
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+<!--<![endif]-->
+  
+
+
+
+<div hidden>
+  
+  <h2 class="sr-only">Templates (for web app):</h2>
+
+  <clap-config>
+    <clap-text at="1">Keep going!</clap-text>
+    <clap-text at="2">Keep going ×2!</clap-text>
+    <clap-text at="3">Give me more!</clap-text>
+    <clap-text at="5">Thank you, thank you</clap-text>
+    <clap-text at="7">Far too kind!</clap-text>
+    <clap-text at="10">Never gonna give me up?</clap-text>
+    <clap-text at="14">Never gonna let me down?</clap-text>
+    <clap-text at="20">Turn around and desert me!</clap-text>
+    <clap-text at="30">You're an addict!</clap-text>
+    <clap-text at="40">Son of a clapper!</clap-text>
+    <clap-text at="50">No way</clap-text>
+    <clap-text at="60">Go back to work!</clap-text>
+    <clap-text at="70">This is getting out of <em>hand</em></clap-text>
+    <clap-text at="80">Unbelievable</clap-text>
+    <clap-text at="90">PREPOSTEROUS</clap-text>
+    <clap-text at="100">I N S A N I T Y</clap-text>
+    <clap-text at="185"><span style="font-family:monospace">FEED ME A STRAY CAT</span></clap-text>
+  </clap-config>
+
+  <template id="_animation-template">
+  <div class="animation-main fixed-top">
+    <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+</ul></nav>
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+  <template id="_loading-template">
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+  <template id="_error-template">
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+  <template id="_permalink-template">
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="content-hash"></span>
+  </a>
+</template>
+
+</div>
+
+
+</body>
+</html>

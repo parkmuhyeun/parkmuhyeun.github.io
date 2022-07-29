@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="ko"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v9.1.5 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+
+  <meta name="robots" content="noindex">
+
+
+
+  
+    
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>빈 생명주기 콜백 | 애송이 개발 블로그</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="빈 생명주기 콜백" />
+<meta name="author" content="Muhyeun Park" />
+<meta property="og:locale" content="ko_KR, en_US" />
+<meta name="description" content="Bean LifeCycle Callback" />
+<meta property="og:description" content="Bean LifeCycle Callback" />
+<link rel="canonical" href="https://parkmuhyeun.github.io/study/spring/2022-03-11-Spring(7)/" />
+<meta property="og:url" content="https://parkmuhyeun.github.io/study/spring/2022-03-11-Spring(7)/" />
+<meta property="og:site_name" content="애송이 개발 블로그" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-03-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="빈 생명주기 콜백" />
+<script type="application/ld+json">
+{"headline":"빈 생명주기 콜백","dateModified":"2022-04-03T14:40:59+00:00","url":"https://parkmuhyeun.github.io/study/spring/2022-03-11-Spring(7)/","datePublished":"2022-03-11T00:00:00+00:00","author":{"@type":"Person","name":"Muhyeun Park"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://parkmuhyeun.github.io/study/spring/2022-03-11-Spring(7)/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://parkmuhyeun.github.io/assets/img/logo.jpg"},"name":"Muhyeun Park"},"description":"Bean LifeCycle Callback","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="spring,springboot,java,jpa">
+  
+
+
+
+  <meta name="theme-color" content="rgb(8,46,57)">
+
+
+<!-- tipuesearch -->
+<link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+<script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="애송이 개발 블로그">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="application-name" content="애송이 개발 블로그">
+
+<meta name="generator" content="Hydejack v9.1.5" />
+
+
+<link rel="alternate" href="https://parkmuhyeun.github.io/study/spring/2022-03-11-Spring(7)/" hreflang="ko-kr, en-us">
+
+<link type="application/atom+xml" rel="alternate" href="https://parkmuhyeun.github.io/feed.xml" title="애송이 개발 블로그" />
+
+
+<link rel="shortcut icon"    href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+
+<link rel="manifest" href="/assets/site.webmanifest">
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+<link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG">
+
+
+
+
+
+
+<script>!function(r,c){"use strict";function a(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=c.createElement("script");n.src=e,t&&a(n,"load",t,{once:!0});t=c.scripts[0];return t.parentNode.insertBefore(n,t),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=c.createElement("script");function o(){r._loaded=!0,t&&a(n,"load",t,{once:!0});var e=c.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():a(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){a(c.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}}(window,document);
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+!function(w) {
+  w._baseURL = '/';
+  w._publicPath = '/assets/js/';
+  w._noPushState = false;
+  w._noDrawer = false;
+  w._noNavbar = false;
+  w._noToc = false;
+  w._noSearch = false;
+  w._search = {
+    DATA_URL: '/assets/sitedata.json?no-cache',
+    STORAGE_KEY: 'mini-search/',
+    INDEX_KEY: 'index--2022-04-03T14:49:07+00:00',
+  };
+  w._clapButton = true;
+}(window);</script>
+
+
+<script async src="/assets/bower_components/MathJax/es5/tex-mml-chtml.js" id="_MathJax"></script>
+
+
+<!--[if gt IE 8]><!---->
+
+  
+
+
+
+
+<link rel="stylesheet" href="/assets/css/hydejack-9.1.5.css" id="_stylePreload">
+<link rel="stylesheet" href="/assets/icomoon/style.css" id="_iconsPreload">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap" id="_fontsPreload">
+
+
+
+  <style id="_pageStyle">
+
+html{--accent-color: rgb(79,177,186);--accent-color-faded: rgba(79,177,186,0.5);--accent-color-highlight: rgba(79,177,186,0.1);--accent-color-darkened: #409ba3;--theme-color: rgb(8,46,57)}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+
+</head>
+
+<body class="no-break-layout">
+  
+
+
+<hy-push-state
+  id="_pushState"
+  replace-selector="#_main"
+  link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)"
+  script-selector="script"
+  duration="500"
+  hashchange
+>
+  
+  
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <span class="sr-only">Jump to:</span>
+    <div class="nav-btn-bar">
+      <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <div class="nav-span"></div> -->
+
+      <!--상단메뉴 카테고리들 -->
+      <div class="top-menu">
+        
+            
+                
+                    <a 
+                    id="_drawer--opened"
+                    href="/about/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    About
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/project/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Project
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/study/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Study
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/etc/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Etc
+                    </a>
+            
+        
+      </div>
+
+      <!-- 검색 tipuesearch -->
+      <div class="nav-span">
+        <form action="/search">
+          <div class="tipue_search_left">
+            <img src="/assets/tipuesearch/search.png" class="tipue_search_icon">
+          </div>
+          <div class="tipue_search_right">
+            <input type="text" name="q" id="tipue_search_input"  placeholderpattern=".{1,}" title="At least 1 characters" required>
+          </div>
+          <div style="clear: both;"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+  <main
+  id="_main"
+  class="content layout-post"
+  role="main"
+>
+  <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+    <li><a href="/">home</a></li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/">study</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/spring/">spring</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          <span>2022-03-11-Spring(7)</span>
+        
+      </li>
+    
+  
+</ul></nav>
+  
+
+
+
+
+
+
+
+
+
+
+<article id="post-study-spring-Spring(7)" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title flip-project-title">
+      
+        빈 생명주기 콜백
+      
+    </h1>
+
+    <div class="post-date">
+      
+      <span class="ellipsis mr1">
+        <time datetime="2022-03-11T00:00:00+00:00">11 Mar 2022</time> in <a href="/study/" class="flip-title">study</a> / <a href="/spring/" class="flip-title">Spring</a> on <span>Java</span>, <span>Spring</span>
+      </span>
+      
+    </div>
+
+    
+    
+
+    
+
+
+
+  
+    <p class="note-sm" >
+      Bean LifeCycle Callback
+
+    </p>
+  
+
+
+  </header>
+
+  
+    <h2 id="빈-생명주기-콜백-시작">빈 생명주기 콜백 시작</h2>
+<p>데이터베이스 커넥션 풀이나, 네트워크 소켓처럼 애플리케이션 시작 시점에 필요한 연결을 미리 해두고, 애플리케이션 종료 시점에 연결을 모두 종료하는 작업을 하려면, 객체의 초기화와 종료 작업이 필요하다. 스프링을 통해 어떻게 이러한 작업들을 진행하는지 알아보자.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 실제로 연결 x 단순히 문자만 출력</span>
+<span class="c1">// connect() 호출해서 연결, 애플리케이션 종료되면 disConnect() 호출</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">NetworkClient</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span> 
+
+    <span class="kd">public</span> <span class="nf">NetworkClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"생성자 호출, url = "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+        <span class="n">connect</span><span class="o">();</span>
+        <span class="n">call</span><span class="o">(</span><span class="s">"초기화 연결 메시지"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUrl</span><span class="o">(</span><span class="nc">String</span> <span class="n">url</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 시작시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"connect: "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call: "</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">" message = "</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 종료시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">disconnect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"close: "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BeanLifeCycleTest</span> <span class="o">{</span>
+    
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">lifeCycleTest</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">ConfigurableApplicationContext</span> <span class="n">ac</span> <span class="o">=</span> <span class="k">new</span>
+        <span class="nc">AnnotationConfigApplicationContext</span><span class="o">(</span><span class="nc">LifeCycleConfig</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="nc">NetworkClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="nc">NetworkClient</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">ac</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Configuration</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LifeCycleConfig</span> <span class="o">{</span>
+        <span class="nd">@Bean</span>
+        <span class="kd">public</span> <span class="nc">NetworkClient</span> <span class="nf">networkClient</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nc">NetworkClient</span> <span class="n">networkClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NetworkClient</span><span class="o">();</span>
+            <span class="n">networkClient</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">"http://hello-spring.dev"</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">networkClient</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>실행하면 다음과 같은 결과가 나온다.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>생성자 호출, url = null
+connect: null
+call: null message = 초기화 연결 메시지
+</code></pre></div></div>
+<p>생성자 부분을 보면 url 정보 없이 connect가 호출되는 것을 확인할 수 있다. 객체를 생성하는 단계에는 url이 없고, 객체를 생성한 다음에 외부에서 수정자 주입을 통해 setUrl()이 호출되어야 url 존재하게 된다.</p>
+
+<h3 id="스프링-빈은-간단하게-다음과-같은-라이프사이클을-가진다">스프링 빈은 간단하게 다음과 같은 라이프사이클을 가진다.</h3>
+
+<p>객체 생성 -&gt; 의존관계 주입</p>
+
+<p>스프링 빈은 객체를 생성하고, 의존관계 주입이 다 끝난 다음에야 필요한 데이터를 사용할 수 있는 준비가 완료된다. 따라서 초기화 작업은 의존관계 주입이 모두 완료되고 난 다음에 호출해야 한다. 그런데 어떻게 개발자가 의존관계 주입이 완료된 시점을 알 수 있을까?</p>
+
+<p>스프링은 의존관계 주입이 완료되면 스프링 빈에게 콜백 메서드를 통해서 초기화 시점을 알려주는 다양한 기능을 제공한다. 또한 스프링은 스프링컨테이너가 종료되기 직전에 소멸 콜백을 준다. 따라서 안전하게 종료 작업을 진행할 수 있다.</p>
+
+<h3 id="스프링-빈의-이벤트-라이프사이클">스프링 빈의 이벤트 라이프사이클</h3>
+
+<p>스프링 컨테이너 생성 -&gt; 스프링 빈 생성 -&gt; 의존관계 주입 -&gt; 초기화 콜백 -&gt; 사용 -&gt; 소멸전 콜백 -&gt; 스프링 종료</p>
+
+<hr />
+<p>*참고: 객체의 생성과 초기화를 분리하자.</p>
+
+<p>생성자는 필수 정보(파라미터)를 받고, 메모리를 할당해서 객체를 생성하는 책임을 가진다. 반면에 초기화는 이렇게 생성된 값을 활용해서 외부 커넥션을 연결하는 등 무거운 동작을 수행한다.</p>
+
+<p>따라서 생성자 안에서 무거운 초기화 작업을 함께 하는 것 보다는 객체를 생성하는 부분과 초기화 하는 부분을 명확하게 나누는 것이 유지보수 관점에서 좋다. 물론 내부 값들만 약간 변경하는 정도는 생성자에서 한번에 처리하는게 더 나을 수 있다.</p>
+
+<hr />
+
+<h3 id="스프링은-크게-3가지-방법으로-빈-생명주기-콜백을-지원한다">스프링은 크게 3가지 방법으로 빈 생명주기 콜백을 지원한다.</h3>
+<ul>
+  <li>인터페이스(InitializingBean, DisposableBean)</li>
+  <li>설정 정보에 초기화 메서드, 종료 메서드 지정</li>
+  <li>@PostConstruct, @PreDestroy 애노테이션 지원</li>
+</ul>
+
+<h2 id="인터페이스-initializingbean-disposablebean">인터페이스 InitializingBean, DisposableBean</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NetworkClient</span> <span class="kd">implements</span> <span class="nc">InitializingBean</span><span class="o">,</span> <span class="nc">DisposableBean</span> <span class="o">{</span>
+    
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">NetworkClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"생성자 호출, url = "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUrl</span><span class="o">(</span><span class="nc">String</span> <span class="n">url</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 시작시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"connect: "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call: "</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">" message = "</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 종료시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">disConnect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"close + "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">connect</span><span class="o">();</span> <span class="n">call</span><span class="o">(</span><span class="s">"초기화 연결 메시지"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">disConnect</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>InitializingBean은 afterPropertiesSet() 메서드로 초기화를 지원</li>
+  <li>DisposableBean은 destory() 메서드로 소멸을 지원</li>
+</ul>
+
+<p>위의 BeanLifeCycleTest 실행 후 출력 결과</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>생성자 호출, url = null
+NetworkClient.afterPropertiesSet
+connect: http://hello-spring.dev
+call: http://hello-spring.dev message = 초기화 연결 메시지
+13:24:49.043 [main] DEBUG 
+org.springframework.context.annotation AnnotationConfigApplicationContext - 
+Closing NetworkClient.destroy
+close + http://hello-spring.dev
+</code></pre></div></div>
+<ul>
+  <li>출력 결과를 보면 초기화 메서드가 주입 완료 후에 적절하게 호출 된 것을 확인 할 수 있다.</li>
+  <li>그리고 스프링 컨테이터의 종료가 호출되자 소멸 메서드가 호출 된 것도 확인할 수 있다.</li>
+</ul>
+
+<h3 id="초기화-소멸-인터페이스-단점">초기화, 소멸 인터페이스 단점</h3>
+<ul>
+  <li>이 인터페이스는 스프링 전용 인터페이스다. 해당 코드가 스프링 전용 인터페이스에 의존</li>
+  <li>초기화, 소멸 메서드의 이름을 변경할 수 없다.</li>
+  <li>내가 코드를 고칠 수 없는 외부 라이브러리에 적용할 수 없다.</li>
+</ul>
+
+<p>*참고: 이 방법은 스프링 초창기에 나온 방법이고, 지금은 다음의 더 나은 방법들이 있어서 거의 사용하지 않는다.</p>
+
+<h2 id="빈-등록-초기화-소멸-메서드-지정">빈 등록 초기화, 소멸 메서드 지정</h2>
+<p>설정 정보에 @Bean(initMethod = “init”, destoryMethod = “close”)처럼 초기화, 소멸 메서드를 지정할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NetworkClient</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">NetworkClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"생성자 호출, url = "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUrl</span><span class="o">(</span><span class="nc">String</span> <span class="n">url</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 시작시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"connect: "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call: "</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">" message = "</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 종료시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">disConnect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"close + "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"NetworkClient.init"</span><span class="o">);</span> <span class="n">connect</span><span class="o">();</span>
+        <span class="n">call</span><span class="o">(</span><span class="s">"초기화 연결 메시지"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"NetworkClient.close"</span><span class="o">);</span>
+        <span class="n">disConnect</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>설정정보에 초기화 소멸 메서드 지정</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">static</span> <span class="kd">class</span> <span class="nc">LifeCycleConfig</span> <span class="o">{</span>
+    <span class="nd">@Bean</span><span class="o">(</span><span class="n">initMethod</span> <span class="o">=</span> <span class="s">"init"</span><span class="o">,</span> <span class="n">destroyMethod</span> <span class="o">=</span> <span class="s">"close"</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">NetworkClient</span> <span class="nf">networkClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">NetworkClient</span> <span class="n">networkClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NetworkClient</span><span class="o">();</span>
+        <span class="n">networkClient</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">"http://hello-spring.dev"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">networkClient</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>결과</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>생성자 호출, url = null
+NetworkClient.init
+connect: http://hello-spring.dev
+call: http://hello-spring.dev message = 초기화 연결 메시지
+13:33:10.029 [main] DEBUG 
+org.springframework.context.annotation.AnnotationConfigApplicationContext - 
+Closing NetworkClient.close
+close + http://hello-spring.dev
+</code></pre></div></div>
+
+<h3 id="설정-정보-사용-특징">설정 정보 사용 특징</h3>
+<ul>
+  <li>메서드 이름을 자유롭게 줄 수 있다.</li>
+  <li>스프링 빈이 스프링 코드에 의존하지 않는다.</li>
+  <li>코드가 아니라 설정 정보를 사용하기 때문에 코드를 고칠 수 없는 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있다.</li>
+</ul>
+
+<h3 id="종료-메서드-추론">종료 메서드 추론</h3>
+<ul>
+  <li>@Bean의 destroyMethod 속성에는 특별한 기능이 있다.</li>
+  <li>라이브러리는 대부분 close, shutdown 이라는 이름의 종료 메서드를 사용한다.</li>
+  <li>@Bean의 destoryMethod는 기본값이 (inferred) (추론)으로 등록되어 있다.</li>
+  <li>이 추론 기능은 close, shutdown 라는 이름의 메서드를 자동으로 호출해준다.</li>
+  <li>따라서 직접 스프링 빈으로 등록하면 종료 메서드는 따로 적어주지 않아도 잘 동작한다.</li>
+  <li>추론 기능을 사용하기 싫으면 destoryMethod=”“처럼 빈 공백을 지정하면 된다.</li>
+</ul>
+
+<h2 id="애노테이션-postconstruct-predestory">애노테이션 @PostConstruct, @PreDestory</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NetworkClient</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">url</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">NetworkClient</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"생성자 호출, url = "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUrl</span><span class="o">(</span><span class="nc">String</span> <span class="n">url</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">;</span>
+    <span class="o">}</span> 
+
+    <span class="c1">//서비스 시작시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"connect: "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">(</span><span class="nc">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call: "</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">" message = "</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//서비스 종료시 호출</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">disConnect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"close + "</span> <span class="o">+</span> <span class="n">url</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@PostConstruct</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"NetworkClient.init"</span><span class="o">);</span>
+        <span class="n">connect</span><span class="o">();</span>
+        <span class="n">call</span><span class="o">(</span><span class="s">"초기화 연결 메시지"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@PreDestroy</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"NetworkClient.close"</span><span class="o">);</span>
+        <span class="n">disConnect</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="kd">static</span> <span class="kd">class</span> <span class="nc">LifeCycleConfig</span> <span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">NetworkClient</span> <span class="nf">networkClient</span><span class="o">()</span> <span class="o">{</span> 
+        <span class="nc">NetworkClient</span> <span class="n">networkClient</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NetworkClient</span><span class="o">();</span>
+        <span class="n">networkClient</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">"http://hello-spring.dev"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">networkClient</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>실행 결과</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>생성자 호출, url = null
+NetworkClient.init
+connect: http://hello-spring.dev
+call: http://hello-spring.dev message = 초기화 연결 메시지
+19:40:50.269 [main] DEBUG 
+org.springframework.context.annotation.AnnotationConfigApplicationContext - 
+Closing NetworkClient.close
+close + http://hello-spring.dev
+</code></pre></div></div>
+<ul>
+  <li>@PostConstruct, @PreDestory 이 두 애노테이션을 사용하면 가장 편리하게 초기화와 종료를 실행할 수 있다.</li>
+</ul>
+
+<h3 id="postconstruct-predestroy-애노테이션-특징">@PostConstruct, @PreDestroy 애노테이션 특징</h3>
+<ul>
+  <li>최신 스프링에서 가장 권장하는 방법</li>
+  <li>애노테이션 하나만 붙이면 되므로 매우 편리</li>
+  <li>스프링에 종속적인 기술이 아니라 JSR-250라는 자바 표준이다. 따라서 스프링이 아닌 다른 컨테이너에서도 동작한다.</li>
+  <li>컴포넌트 스캔과 잘 어울린다.</li>
+  <li>유일한 단점은 외부 라이브러리에는 적용하지 못한다는 것이다. 외부 라이브러리를 초기화, 종료 해야 하면 @Bean의 기능을 사용하자.</li>
+</ul>
+
+<h2 id="정리">정리</h2>
+<ul>
+  <li>@PostConstruct, @PreDestory 애노테이션을 사용하자</li>
+  <li>코드를 고칠 수 없는 외부라이브러리를 초기화, 종료해야 하면 @Bean의 initMethod, destroyMethod를 사용하자</li>
+</ul>
+
+<p>참고:
+<a href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8">Spring Core</a></p>
+
+<p>*틀린 부분이 있으면 언제든지 말씀해 주시면 공부해서 수정하겠습니다.</p>
+
+  
+</article>
+
+
+
+  <hr class="dingbat related mb6" />
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T765T1JLEW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T765T1JLEW');
+</script>
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr-bottom">
+    About
+  </h2>
+
+  <p>반갑습니다. 백엔드 개발자 박무현입니다.</p>
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+  <aside class="related mb4" role="complementary">  <h2 class="hr-bottom">Related Posts</h2>  <ul class="related-posts">                  <li class="h4">  <a href="/study/http%20web/2022-04-03-Uri-Webbrowser/" class="flip-title"><span>Uri-Webbrowser</span></a>  <time class="faded fine" datetime="2022-04-03T00:00:00+00:00">03 Apr 2022</time></li>                        <li class="h4">  <a href="/study/http%20web/2022-03-27-Internet-Network/" class="flip-title"><span>Internet Network</span></a>  <time class="faded fine" datetime="2022-03-27T00:00:00+00:00">27 Mar 2022</time></li>                        <li class="h4">  <a href="/study/spring/2022-03-08-Spring(6)/" class="flip-title"><span>의존관계 자동 주입</span></a>  <time class="faded fine" datetime="2022-03-08T00:00:00+00:00">08 Mar 2022</time></li>            </ul></aside>
+
+  
+
+  
+  
+
+  
+    
+<aside class="comments related" role="complementary">
+  <h2>Comments</h2>
+  <script src="https://utteranc.es/client.js"
+        repo="parkmuhyeun/blog-comments-repo"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</aside>
+
+
+  
+
+
+  
+<footer class="content" role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2022. All rights reserved.
+</small></p>
+  
+    <p><small>Powered by 애송이</small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+  <hy-drawer
+  id="_drawer"
+  class=""
+  side="left"
+  threshold="10"
+  noscroll
+  
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+
+
+
+
+<div class="sidebar-bg sidebar-overlay" style="background-color:rgb(8,46,57);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+  <div class="sidebar-about">
+    
+    <div class="sidebar-title" style="margin-bottom: 45px;">
+      <a class="sidebar-title" href="/"><h2 class="h1">애송이 개발 블로그</h2></a>
+    </div>
+  
+    
+      <a class="no-hover" href="/" tabindex="-1">
+        <img src="/assets/img/logo.jpg" class="avatar" alt="애송이 개발 블로그" width="120" height="120" loading="lazy" />
+      </a>
+    
+    
+    
+      <p class="">
+        끊임없이 생각하고 나아가는 개발자
+
+      </p>
+    
+  </div>
+
+  <nav class="sidebar-nav heading" role="navigation">
+    <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_drawer--opened"
+          href="/about/"
+          class="sidebar-nav-item "
+          
+        >
+          About
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/project/"
+          class="sidebar-nav-item "
+          
+        >
+          Project
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/study/"
+          class="sidebar-nav-item "
+          
+        >
+          Study
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/etc/"
+          class="sidebar-nav-item "
+          
+        >
+          Etc
+        </a>
+      </li>
+    
+  
+</ul>
+
+  </nav>
+
+  <div>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fparkmuhyeun.github.io&count_bg=%23005666&title_bg=%23464964&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+  </div>
+
+  
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+  
+</div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+</hy-push-state>
+
+
+  <!--[if gt IE 10]><!---->
+  <script nomodule>!function(){var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())}();
+</script>
+  <script src="/assets/js/hydejack-9.1.5.js" type="module"></script>
+  <script src="/assets/js/LEGACY-hydejack-9.1.5.js" nomodule defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'G-T765T1JLEW', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementById('_pushState');
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+<!--<![endif]-->
+  
+
+
+
+<div hidden>
+  
+  <h2 class="sr-only">Templates (for web app):</h2>
+
+  <clap-config>
+    <clap-text at="1">Keep going!</clap-text>
+    <clap-text at="2">Keep going ×2!</clap-text>
+    <clap-text at="3">Give me more!</clap-text>
+    <clap-text at="5">Thank you, thank you</clap-text>
+    <clap-text at="7">Far too kind!</clap-text>
+    <clap-text at="10">Never gonna give me up?</clap-text>
+    <clap-text at="14">Never gonna let me down?</clap-text>
+    <clap-text at="20">Turn around and desert me!</clap-text>
+    <clap-text at="30">You're an addict!</clap-text>
+    <clap-text at="40">Son of a clapper!</clap-text>
+    <clap-text at="50">No way</clap-text>
+    <clap-text at="60">Go back to work!</clap-text>
+    <clap-text at="70">This is getting out of <em>hand</em></clap-text>
+    <clap-text at="80">Unbelievable</clap-text>
+    <clap-text at="90">PREPOSTEROUS</clap-text>
+    <clap-text at="100">I N S A N I T Y</clap-text>
+    <clap-text at="185"><span style="font-family:monospace">FEED ME A STRAY CAT</span></clap-text>
+  </clap-config>
+
+  <template id="_animation-template">
+  <div class="animation-main fixed-top">
+    <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+</ul></nav>
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+  <template id="_loading-template">
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+  <template id="_error-template">
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+  <template id="_permalink-template">
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="content-hash"></span>
+  </a>
+</template>
+
+</div>
+
+
+</body>
+</html>

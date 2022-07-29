@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ko"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v9.1.5 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+
+  <meta name="robots" content="noindex">
+
+
+
+  
+    
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>컴포넌트 스캔 | 애송이 개발 블로그</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="컴포넌트 스캔" />
+<meta name="author" content="Muhyeun Park" />
+<meta property="og:locale" content="ko_KR, en_US" />
+<meta name="description" content="Component Scan" />
+<meta property="og:description" content="Component Scan" />
+<link rel="canonical" href="https://parkmuhyeun.github.io/study/spring/2022-03-02-Spring(5)/" />
+<meta property="og:url" content="https://parkmuhyeun.github.io/study/spring/2022-03-02-Spring(5)/" />
+<meta property="og:site_name" content="애송이 개발 블로그" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-03-02T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="컴포넌트 스캔" />
+<script type="application/ld+json">
+{"headline":"컴포넌트 스캔","dateModified":"2022-04-03T14:40:59+00:00","url":"https://parkmuhyeun.github.io/study/spring/2022-03-02-Spring(5)/","datePublished":"2022-03-02T00:00:00+00:00","author":{"@type":"Person","name":"Muhyeun Park"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://parkmuhyeun.github.io/study/spring/2022-03-02-Spring(5)/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://parkmuhyeun.github.io/assets/img/logo.jpg"},"name":"Muhyeun Park"},"description":"Component Scan","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="spring,springboot,java,jpa">
+  
+
+
+
+  <meta name="theme-color" content="rgb(8,46,57)">
+
+
+<!-- tipuesearch -->
+<link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+<script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="애송이 개발 블로그">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="application-name" content="애송이 개발 블로그">
+
+<meta name="generator" content="Hydejack v9.1.5" />
+
+
+<link rel="alternate" href="https://parkmuhyeun.github.io/study/spring/2022-03-02-Spring(5)/" hreflang="ko-kr, en-us">
+
+<link type="application/atom+xml" rel="alternate" href="https://parkmuhyeun.github.io/feed.xml" title="애송이 개발 블로그" />
+
+
+<link rel="shortcut icon"    href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+
+<link rel="manifest" href="/assets/site.webmanifest">
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+<link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG">
+
+
+
+
+
+
+<script>!function(r,c){"use strict";function a(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=c.createElement("script");n.src=e,t&&a(n,"load",t,{once:!0});t=c.scripts[0];return t.parentNode.insertBefore(n,t),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=c.createElement("script");function o(){r._loaded=!0,t&&a(n,"load",t,{once:!0});var e=c.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():a(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){a(c.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}}(window,document);
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+!function(w) {
+  w._baseURL = '/';
+  w._publicPath = '/assets/js/';
+  w._noPushState = false;
+  w._noDrawer = false;
+  w._noNavbar = false;
+  w._noToc = false;
+  w._noSearch = false;
+  w._search = {
+    DATA_URL: '/assets/sitedata.json?no-cache',
+    STORAGE_KEY: 'mini-search/',
+    INDEX_KEY: 'index--2022-04-03T14:49:07+00:00',
+  };
+  w._clapButton = true;
+}(window);</script>
+
+
+<script async src="/assets/bower_components/MathJax/es5/tex-mml-chtml.js" id="_MathJax"></script>
+
+
+<!--[if gt IE 8]><!---->
+
+  
+
+
+
+
+<link rel="stylesheet" href="/assets/css/hydejack-9.1.5.css" id="_stylePreload">
+<link rel="stylesheet" href="/assets/icomoon/style.css" id="_iconsPreload">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap" id="_fontsPreload">
+
+
+
+  <style id="_pageStyle">
+
+html{--accent-color: rgb(79,177,186);--accent-color-faded: rgba(79,177,186,0.5);--accent-color-highlight: rgba(79,177,186,0.1);--accent-color-darkened: #409ba3;--theme-color: rgb(8,46,57)}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+
+</head>
+
+<body class="no-break-layout">
+  
+
+
+<hy-push-state
+  id="_pushState"
+  replace-selector="#_main"
+  link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)"
+  script-selector="script"
+  duration="500"
+  hashchange
+>
+  
+  
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <span class="sr-only">Jump to:</span>
+    <div class="nav-btn-bar">
+      <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <div class="nav-span"></div> -->
+
+      <!--상단메뉴 카테고리들 -->
+      <div class="top-menu">
+        
+            
+                
+                    <a 
+                    id="_drawer--opened"
+                    href="/about/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    About
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/project/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Project
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/study/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Study
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/etc/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Etc
+                    </a>
+            
+        
+      </div>
+
+      <!-- 검색 tipuesearch -->
+      <div class="nav-span">
+        <form action="/search">
+          <div class="tipue_search_left">
+            <img src="/assets/tipuesearch/search.png" class="tipue_search_icon">
+          </div>
+          <div class="tipue_search_right">
+            <input type="text" name="q" id="tipue_search_input"  placeholderpattern=".{1,}" title="At least 1 characters" required>
+          </div>
+          <div style="clear: both;"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+  <main
+  id="_main"
+  class="content layout-post"
+  role="main"
+>
+  <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+    <li><a href="/">home</a></li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/">study</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/spring/">spring</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          <span>2022-03-02-Spring(5)</span>
+        
+      </li>
+    
+  
+</ul></nav>
+  
+
+
+
+
+
+
+
+
+
+
+<article id="post-study-spring-Spring(5)" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title flip-project-title">
+      
+        컴포넌트 스캔
+      
+    </h1>
+
+    <div class="post-date">
+      
+      <span class="ellipsis mr1">
+        <time datetime="2022-03-02T00:00:00+00:00">02 Mar 2022</time> in <a href="/study/" class="flip-title">study</a> / <a href="/spring/" class="flip-title">Spring</a> on <span>Java</span>, <span>Spring</span>
+      </span>
+      
+    </div>
+
+    
+    
+
+    
+
+
+
+  
+    <p class="note-sm" >
+      Component Scan
+
+    </p>
+  
+
+
+  </header>
+
+  
+    <h2 id="컴포넌트-스캔과-의존관계-자동-주입-시작">컴포넌트 스캔과 의존관계 자동 주입 시작</h2>
+<ul>
+  <li>지금까지 스프링 빈을 등록할 때는 자바 코드의 @Bean을 이용했다.(또는 XML의 <bean>을 사용할 수 도 있음)</bean></li>
+  <li>등록해야 할 스프링 빈이 수십, 수백개가 되면 일일이 등록하기도 귀찮고, 누락하는 문제도 생긴다.</li>
+  <li>그래서 스프링은 자동으로 스프링 빈을 등록하는 컴포넌트 스캔이라는 기능 제공</li>
+  <li>의존관계도 자동으로 주입하는 @Autowired 기능도 제공</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppConfig</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>컴포넌트 스캔을 사용하려면 먼저 @ComponentScan을 설정 정보에 붙여주면 된다.</li>
+  <li>예전의 <a href="https://parkmuhyeun.github.io/study/spring/2022-02-10-Spring(2)/#appconfig%EC%9D%98-%EB%93%B1%EC%9E%A5">AppConfig</a>와 달리 @Bean으로 등록한 클래스가 없다.</li>
+  <li>컴포넌트 스캔은 이름 그대로 @Component 애노테이션이 붙은 클래스를 스캔해서 스프링 빈으로 등록한다.</li>
+</ul>
+
+<p>*참고: @Configuration도 컴포넌트 스캔의 대상이 되는데 그 이유는 @Configuration 소스코드를 열어보면 @Component 애노테이션이 붙어있다.</p>
+
+<p>이제 클래스가 컴포넌트 스캔의 대상이 되도록 @Component 애노테이션을 붙여주고 의존관계도 주입해주자.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MemberServiceImpl</span> <span class="kd">implements</span> <span class="nc">MemberService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">MemberRepository</span> <span class="n">memberReepository</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">MemberServiceImpl</span><span class="o">(</span><span class="nc">MemberRepository</span> <span class="n">memberRepository</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">memberRepository</span> <span class="o">=</span> <span class="n">memberRepository</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="컴포넌트-스캔과-자동-의존관계-주입의-동작순서">컴포넌트 스캔과 자동 의존관계 주입의 동작순서</h3>
+
+<h4 id="1-componentscan">1. @ComponentScan</h4>
+
+<p><img src="/assets/img/blog/study/spring/Spring(5)_1.PNG" alt="img" /></p>
+
+<ul>
+  <li>@ComponentScan은 @Component가 붙은 모든 클래스를 스프링 빈으로 등록한다.</li>
+  <li>이때 스프링 빈의 기본 이름은 클래스명을 사용하되 맨 앞글자만 소문자를 사용한다.
+    <ul>
+      <li>빈 이름 기본 전략: MemberServiceImpl 클래스 -&gt; memberServiceImpl</li>
+      <li>빈 이름 직접 지정: 스프링 빈의 이름을 직접 지정하고 싶으면 @Component(“exmemberService”) 이런식으로 이름을 부여하면 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="2-autowired-의존관계-자동-주입">2. @Autowired 의존관계 자동 주입</h4>
+
+<p><img src="/assets/img/blog/study/spring/Spring(5)_2.PNG" alt="img" /></p>
+
+<ul>
+  <li>생성자에 @Autowired를 지정하면, 스프링 컨테이너가 자동으로 해당 스프링 빈을 찾아서 주입한다.</li>
+</ul>
+
+<h2 id="탐색-위치와-기본-스캔-대상">탐색 위치와 기본 스캔 대상</h2>
+<p>모든 자바 클래스를 다 컴포넌트 스캔하면 시간이 오래 걸린다. 그래서 꼭 필요한 위치부터 탐색하도록 시작 위치를 지정할 수 있다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ComponentScan</span><span class="o">{</span>
+    <span class="n">basePackages</span> <span class="o">=</span> <span class="s">"Spring.core"</span><span class="o">,</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>basePackages: 탐색할 패키지의 시작 위치를 지정하는데, 이 패키지를 포함해서 하위 패키지를 모두 탐색한다.</li>
+  <li>만약 지정하지 않으면 @ComponentScan이 붙은 설정 정보 클래스의 패키지가 시작 위치가 된다.</li>
+</ul>
+
+<p>패키지 위치를 지정하지 않고, 설정 정보 클래스의 위치를 프로젝트 최상단에 두는걸 추천. 스프링 부트도 이 방법을 기본으로 제공한다.
+(@SpringBootApplication이 시작 루트 위치에 있는데 이 설정안에 @ComponentScan이 들어있다.)</p>
+
+<h3 id="컴포넌트-스캔-기본-대상">컴포넌트 스캔 기본 대상</h3>
+<p>컴포넌트 스캔은 @Component뿐만 아니라 아래에 있는 것도 대상에 포함한다.</p>
+<ul>
+  <li>@Controller: 스프링 MVC 컨트롤러에서 사용</li>
+  <li>@Service: 스프링 비즈니스 로직에서 사용</li>
+  <li>@Repository: 스프링 데이터 접근 계층에서 사용</li>
+  <li>@Configuration: 스프링 설정 정보에서 사용</li>
+</ul>
+
+<p>컴포넌트 스캔의 용도 뿐만 아니라  다음 애노테이션이 있으면 스프링은 부가 기능을 수행한다.</p>
+<ul>
+  <li>@Controller: 스프링 MVC 컨트롤러로 인식</li>
+  <li>@Repository: 스프링 데이터 접근 계층으로 인식하고, 데이터 계층의 예외를 스프링 예외로 변환해준다.</li>
+  <li>@Configuration: 스프링 설정 정보로 인식하고, 스프링 빈이 싱글톤으로 유지하도록 추가 처리</li>
+  <li>@Service: @Service는 스프링에서 따로 특별한 처리를 하지않고, 개발자들이 핵심 비즈니스 로직이 여기에 있겠구나 라고 비즈니스 계층을 인식하는데 도움을 준다.</li>
+</ul>
+
+<h3 id="필터">필터</h3>
+<ul>
+  <li>includeFilters: 컴포넌트 스캔 대상을 추가로 지정한다.</li>
+  <li>excludeFilters: 컴포넌트 스캔에서 제외할 대상을 지정한다.</li>
+</ul>
+
+<h2 id="중복-등록과-충돌">중복 등록과 충돌</h2>
+<p>컴포넌트 스캔에서 같은 빈 이름을 등록하면 어떻게 될까?</p>
+
+<ol>
+  <li>자동 빈 등록 vs 자동 빈 등록
+    <ul>
+      <li>컴포넌트 스캔에 의해 자동으로 스프링 빈이 등록되는데, 그 이름이 같은 경우 스프링은 오류를 발생시킨다.</li>
+    </ul>
+  </li>
+  <li>수동 빈 등록 vs 자동 빈 등록
+    <ul>
+      <li>이 경우 수동 빈이 자동 빈을 오버라이딩 해버린다.(수동 빈 등록이 우선권)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>최근 스프링 부트에서는 수동 빈 등록과 자동 빈 등록이 충돌나면 오류가 발생하도록 기본 값을 바꾸었다.</p>
+
+<p>참고:
+<a href="https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8">Spring Core</a></p>
+
+<p>*틀린 부분이 있으면 언제든지 말씀해 주시면 공부해서 수정하겠습니다.</p>
+
+  
+</article>
+
+
+
+  <hr class="dingbat related mb6" />
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T765T1JLEW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T765T1JLEW');
+</script>
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr-bottom">
+    About
+  </h2>
+
+  <p>반갑습니다. 백엔드 개발자 박무현입니다.</p>
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+  <aside class="related mb4" role="complementary">  <h2 class="hr-bottom">Related Posts</h2>  <ul class="related-posts">                  <li class="h4">  <a href="/study/http%20web/2022-04-03-Uri-Webbrowser/" class="flip-title"><span>Uri-Webbrowser</span></a>  <time class="faded fine" datetime="2022-04-03T00:00:00+00:00">03 Apr 2022</time></li>                        <li class="h4">  <a href="/study/http%20web/2022-03-27-Internet-Network/" class="flip-title"><span>Internet Network</span></a>  <time class="faded fine" datetime="2022-03-27T00:00:00+00:00">27 Mar 2022</time></li>                        <li class="h4">  <a href="/study/spring/2022-03-11-Spring(7)/" class="flip-title"><span>빈 생명주기 콜백</span></a>  <time class="faded fine" datetime="2022-03-11T00:00:00+00:00">11 Mar 2022</time></li>            </ul></aside>
+
+  
+
+  
+  
+
+  
+    
+<aside class="comments related" role="complementary">
+  <h2>Comments</h2>
+  <script src="https://utteranc.es/client.js"
+        repo="parkmuhyeun/blog-comments-repo"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</aside>
+
+
+  
+
+
+  
+<footer class="content" role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2022. All rights reserved.
+</small></p>
+  
+    <p><small>Powered by 애송이</small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+  <hy-drawer
+  id="_drawer"
+  class=""
+  side="left"
+  threshold="10"
+  noscroll
+  
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+
+
+
+
+<div class="sidebar-bg sidebar-overlay" style="background-color:rgb(8,46,57);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+  <div class="sidebar-about">
+    
+    <div class="sidebar-title" style="margin-bottom: 45px;">
+      <a class="sidebar-title" href="/"><h2 class="h1">애송이 개발 블로그</h2></a>
+    </div>
+  
+    
+      <a class="no-hover" href="/" tabindex="-1">
+        <img src="/assets/img/logo.jpg" class="avatar" alt="애송이 개발 블로그" width="120" height="120" loading="lazy" />
+      </a>
+    
+    
+    
+      <p class="">
+        끊임없이 생각하고 나아가는 개발자
+
+      </p>
+    
+  </div>
+
+  <nav class="sidebar-nav heading" role="navigation">
+    <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_drawer--opened"
+          href="/about/"
+          class="sidebar-nav-item "
+          
+        >
+          About
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/project/"
+          class="sidebar-nav-item "
+          
+        >
+          Project
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/study/"
+          class="sidebar-nav-item "
+          
+        >
+          Study
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/etc/"
+          class="sidebar-nav-item "
+          
+        >
+          Etc
+        </a>
+      </li>
+    
+  
+</ul>
+
+  </nav>
+
+  <div>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fparkmuhyeun.github.io&count_bg=%23005666&title_bg=%23464964&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+  </div>
+
+  
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+  
+</div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+</hy-push-state>
+
+
+  <!--[if gt IE 10]><!---->
+  <script nomodule>!function(){var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())}();
+</script>
+  <script src="/assets/js/hydejack-9.1.5.js" type="module"></script>
+  <script src="/assets/js/LEGACY-hydejack-9.1.5.js" nomodule defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'G-T765T1JLEW', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementById('_pushState');
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+<!--<![endif]-->
+  
+
+
+
+<div hidden>
+  
+  <h2 class="sr-only">Templates (for web app):</h2>
+
+  <clap-config>
+    <clap-text at="1">Keep going!</clap-text>
+    <clap-text at="2">Keep going ×2!</clap-text>
+    <clap-text at="3">Give me more!</clap-text>
+    <clap-text at="5">Thank you, thank you</clap-text>
+    <clap-text at="7">Far too kind!</clap-text>
+    <clap-text at="10">Never gonna give me up?</clap-text>
+    <clap-text at="14">Never gonna let me down?</clap-text>
+    <clap-text at="20">Turn around and desert me!</clap-text>
+    <clap-text at="30">You're an addict!</clap-text>
+    <clap-text at="40">Son of a clapper!</clap-text>
+    <clap-text at="50">No way</clap-text>
+    <clap-text at="60">Go back to work!</clap-text>
+    <clap-text at="70">This is getting out of <em>hand</em></clap-text>
+    <clap-text at="80">Unbelievable</clap-text>
+    <clap-text at="90">PREPOSTEROUS</clap-text>
+    <clap-text at="100">I N S A N I T Y</clap-text>
+    <clap-text at="185"><span style="font-family:monospace">FEED ME A STRAY CAT</span></clap-text>
+  </clap-config>
+
+  <template id="_animation-template">
+  <div class="animation-main fixed-top">
+    <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+</ul></nav>
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+  <template id="_loading-template">
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+  <template id="_error-template">
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+  <template id="_permalink-template">
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="content-hash"></span>
+  </a>
+</template>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ko"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v9.1.5 <https://hydejack.com/>
+-->
+
+
+
+
+
+
+
+<head>
+  
+
+
+
+
+  <meta name="robots" content="noindex">
+
+
+
+  
+    
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Spring Security를 구현해보자 | 애송이 개발 블로그</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="Spring Security를 구현해보자" />
+<meta name="author" content="Muhyeun Park" />
+<meta property="og:locale" content="ko_KR, en_US" />
+<meta name="description" content="Spring Security 적용" />
+<meta property="og:description" content="Spring Security 적용" />
+<link rel="canonical" href="https://parkmuhyeun.github.io/study/spring%20security/2022-02-06-Spring-Security(2)/" />
+<meta property="og:url" content="https://parkmuhyeun.github.io/study/spring%20security/2022-02-06-Spring-Security(2)/" />
+<meta property="og:site_name" content="애송이 개발 블로그" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-06T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Spring Security를 구현해보자" />
+<script type="application/ld+json">
+{"headline":"Spring Security를 구현해보자","dateModified":"2022-04-03T14:40:59+00:00","url":"https://parkmuhyeun.github.io/study/spring%20security/2022-02-06-Spring-Security(2)/","datePublished":"2022-02-06T00:00:00+00:00","author":{"@type":"Person","name":"Muhyeun Park"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://parkmuhyeun.github.io/study/spring%20security/2022-02-06-Spring-Security(2)/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://parkmuhyeun.github.io/assets/img/logo.jpg"},"name":"Muhyeun Park"},"description":"Spring Security 적용","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  
+    <meta name="keywords" content="spring,springboot,java,jpa">
+  
+
+
+
+  <meta name="theme-color" content="rgb(8,46,57)">
+
+
+<!-- tipuesearch -->
+<link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+<script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+<script src="/assets/tipuesearch/tipuesearch.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="애송이 개발 블로그">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta name="application-name" content="애송이 개발 블로그">
+
+<meta name="generator" content="Hydejack v9.1.5" />
+
+
+<link rel="alternate" href="https://parkmuhyeun.github.io/study/spring%20security/2022-02-06-Spring-Security(2)/" hreflang="ko-kr, en-us">
+
+<link type="application/atom+xml" rel="alternate" href="https://parkmuhyeun.github.io/feed.xml" title="애송이 개발 블로그" />
+
+
+<link rel="shortcut icon"    href="/assets/icons/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+
+<link rel="manifest" href="/assets/site.webmanifest">
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+
+<link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG">
+
+
+
+
+
+
+<script>!function(r,c){"use strict";function a(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=c.createElement("script");n.src=e,t&&a(n,"load",t,{once:!0});t=c.scripts[0];return t.parentNode.insertBefore(n,t),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=c.createElement("script");function o(){r._loaded=!0,t&&a(n,"load",t,{once:!0});var e=c.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():a(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){a(c.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}}(window,document);
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+!function(w) {
+  w._baseURL = '/';
+  w._publicPath = '/assets/js/';
+  w._noPushState = false;
+  w._noDrawer = false;
+  w._noNavbar = false;
+  w._noToc = false;
+  w._noSearch = false;
+  w._search = {
+    DATA_URL: '/assets/sitedata.json?no-cache',
+    STORAGE_KEY: 'mini-search/',
+    INDEX_KEY: 'index--2022-04-03T14:49:07+00:00',
+  };
+  w._clapButton = true;
+}(window);</script>
+
+
+<script async src="/assets/bower_components/MathJax/es5/tex-mml-chtml.js" id="_MathJax"></script>
+
+
+<!--[if gt IE 8]><!---->
+
+  
+
+
+
+
+<link rel="stylesheet" href="/assets/css/hydejack-9.1.5.css" id="_stylePreload">
+<link rel="stylesheet" href="/assets/icomoon/style.css" id="_iconsPreload">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap" id="_fontsPreload">
+
+
+
+  <style id="_pageStyle">
+
+html{--accent-color: rgb(79,177,186);--accent-color-faded: rgba(79,177,186,0.5);--accent-color-highlight: rgba(79,177,186,0.1);--accent-color-darkened: #409ba3;--theme-color: rgb(8,46,57)}
+
+</style>
+
+
+<!--<![endif]-->
+
+
+
+
+
+</head>
+
+<body class="no-break-layout">
+  
+
+
+<hy-push-state
+  id="_pushState"
+  replace-selector="#_main"
+  link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)"
+  script-selector="script"
+  duration="500"
+  hashchange
+>
+  
+  
+  <div id="_navbar" class="navbar fixed-top">
+  <div class="content">
+    <span class="sr-only">Jump to:</span>
+    <div class="nav-btn-bar">
+      <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened">
+        <span class="sr-only">Navigation</span>
+        <span class="icon-menu"></span>
+      </a>
+      <!-- <div class="nav-span"></div> -->
+
+      <!--상단메뉴 카테고리들 -->
+      <div class="top-menu">
+        
+            
+                
+                    <a 
+                    id="_drawer--opened"
+                    href="/about/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    About
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/project/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Project
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/study/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Study
+                    </a>
+            
+                
+                    <a 
+                    
+                    href="/etc/"
+                    class="nav-btn top-menu "
+                    
+                    >
+                    Etc
+                    </a>
+            
+        
+      </div>
+
+      <!-- 검색 tipuesearch -->
+      <div class="nav-span">
+        <form action="/search">
+          <div class="tipue_search_left">
+            <img src="/assets/tipuesearch/search.png" class="tipue_search_icon">
+          </div>
+          <div class="tipue_search_right">
+            <input type="text" name="q" id="tipue_search_input"  placeholderpattern=".{1,}" title="At least 1 characters" required>
+          </div>
+          <div style="clear: both;"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr class="sr-only" hidden />
+
+  <main
+  id="_main"
+  class="content layout-post"
+  role="main"
+>
+  <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+    <li><a href="/">home</a></li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/">study</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          
+          
+          <a href="/study/spring%20security/">spring security</a>
+        
+      </li>
+    
+      <li>
+        
+          <span>/</span>
+          <span>2022-02-06-Spring-Security(2)</span>
+        
+      </li>
+    
+  
+</ul></nav>
+  
+
+
+
+
+
+
+
+
+
+
+<article id="post-study-spring%20security-Spring-Security(2)" class="page post mb6" role="article">
+  <header>
+    <h1 class="post-title flip-project-title">
+      
+        Spring Security를 구현해보자
+      
+    </h1>
+
+    <div class="post-date">
+      
+      <span class="ellipsis mr1">
+        <time datetime="2022-02-06T00:00:00+00:00">06 Feb 2022</time> in <a href="/study/" class="flip-title">study</a> / <a href="/spring-security/" class="flip-title">Spring security</a> 
+      </span>
+      
+    </div>
+
+    
+    
+
+    
+
+
+
+  
+    <p class="note-sm" >
+      Spring Security 적용
+
+    </p>
+  
+
+
+  </header>
+
+  
+    <hr />
+<p><a href="https://parkmuhyeun.github.io/study/spring%20security/2022-01-29-Spring-Security(1)">이전 글</a>에서 Spring Security 과정을 이해해보았다. 이번에는 어떻게 적용을 하는지 직접 구현해보면서 알아보자.</p>
+
+<hr />
+
+<p><a href="https://parkmuhyeun.github.io/study/spring%20security/2022-01-29-Spring-Security(1)">이전 글</a>에서 구현하는 방법에 간단하게 구현하는 방법과 직접 AuthenticationProvider을 커스텀하는 방법이 있다고 했는데 먼저 기본적인 방법부터 알아보자.</p>
+
+<h2 id="standard-method-daoauthenticationprovider">Standard Method (DaoAuthenticationProvider)</h2>
+
+<p><img src="/assets/img/blog/study/spring-security/Spring-Security(2)_1.PNG" alt="img" /></p>
+
+<p>표준적이고 가장 일반적인 구현방법은 AuthenticationProvider에  DaoAuthenticationProvider을 사용하는 방법인데 따로 Provider을 구현을 할필요가 없기 때문에 사실상 SecurityConfig 설정하고, Userdetails, UserdetailsService만 구현하면된다.</p>
+
+<h3 id="0-설정-셋팅">0. 설정 셋팅</h3>
+<p>build.gradle에 dependency 추가</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">jpa</span><span class="err">'</span>
+	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">security</span><span class="err">'</span>
+    <span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">thymeleaf</span><span class="err">'</span>
+	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="err">'</span>
+	<span class="n">implementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">extras</span><span class="o">:</span><span class="n">thymeleaf</span><span class="o">-</span><span class="n">extras</span><span class="o">-</span><span class="n">springsecurity5</span><span class="err">'</span>
+	<span class="n">compileOnly</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">projectlombok</span><span class="o">:</span><span class="n">lombok</span><span class="err">'</span>
+	<span class="n">annotationProcessor</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">projectlombok</span><span class="o">:</span><span class="n">lombok</span><span class="err">'</span>
+	<span class="n">testImplementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">test</span><span class="err">'</span>
+	<span class="n">testImplementation</span> <span class="err">'</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">security</span><span class="o">:</span><span class="n">spring</span><span class="o">-</span><span class="n">security</span><span class="o">-</span><span class="n">test</span><span class="err">'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>SpringSecurity에 대한 기본적인 설정 추가.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+    
+    <span class="c1">// 정적 자원에 대해서는 Security 설정을 적용하지 않음. </span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">WebSecurity</span> <span class="n">web</span><span class="o">)</span> <span class="o">{</span>
+       <span class="n">web</span><span class="o">.</span><span class="na">ignoring</span><span class="o">().</span><span class="na">requestMatchers</span><span class="o">(</span><span class="nc">PathRequest</span><span class="o">.</span><span class="na">toStaticResources</span><span class="o">().</span><span class="na">atCommonLocations</span><span class="o">());</span> 
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+      <span class="n">http</span><span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/user/**"</span><span class="o">).</span><span class="na">authenticated</span><span class="o">()</span> <span class="c1">// /user/** 요청에 대해 로그인 요구</span>
+              <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/admin/**"</span><span class="o">).</span><span class="na">access</span><span class="o">(</span><span class="s">"hasRole('ROLE_ADMIN')"</span><span class="o">)</span> <span class="c1">// /admin/** 요청에 대해 ROLE_ADMIN 역활을 가지고 있어야 함</span>
+              <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">permitAll</span><span class="o">()</span> <span class="c1">// 나머지 요청은 로그인 요구x</span>
+              <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">formLogin</span><span class="o">()</span>  <span class="c1">//form 기반 로그인 설정</span>
+              <span class="o">.</span><span class="na">loginProcessingUrl</span><span class="o">(</span><span class="s">"/login"</span><span class="o">)</span>   <span class="c1">// 로그인 form의 action에 들어갈 처리 URI</span>
+              <span class="o">.</span><span class="na">loginPage</span><span class="o">(</span><span class="s">"/loginForm"</span><span class="o">)</span>  <span class="c1">//로그인 페이지 설정</span>
+              <span class="o">.</span><span class="na">defaultSuccessUrl</span><span class="o">(</span><span class="s">"/"</span><span class="o">);</span>  <span class="c1">//로그인 성공시 URL</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+    <span class="c1">//PasswordEncoder</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">BCryptPasswordEncoder</span> <span class="nf">encoderPwd</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">BCryptPasswordEncoder</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>코드만 적으면 이해하기가 어려울테니 순서에 맞춰서 과정을 설명하며 코드를 구현해보겠다.(구현관련해서만 설명하니 역활 설명과 상세한 과정 설명은 <a href="https://parkmuhyeun.github.io/study/spring%20security/2022-01-29-Spring-Security(1)">이전 글</a>을 보자!)</p>
+
+<p><img src="/assets/img/blog/study/spring-security/Spring-Security(2)_2.PNG" alt="img" /></p>
+
+<h3 id="1-로그인-요청">1. 로그인 요청</h3>
+
+<p>사용자는 아이디와 비밀번호를 입력해서 로그인 요청을 한다. 이번 예제는 Form 기반으로 요청하는 상황.</p>
+
+<h3 id="2-userpasswordauthenticationtoken-발급">2. UserPasswordAuthenticationToken 발급</h3>
+<p>전송이 오면 AuthenticationFilter이 id, password를 가로채 UserPasswordAuthenticationToken 발급. 여기서 유효성을 검사 하기위해 필터를 커스텀해서 추가시킬수 있지만 복잡해지므로 생략한다. 나중에 필요할 때 추가하면 된다.</p>
+
+<h3 id="3-usernamepasswordtoken을-authentication-manager에게-전달">3. UsernamePasswordToken을 Authentication Manager에게 전달</h3>
+<p>AuthenticationFilter은 생성한 UsernamePasswordToken을 Authentication Manager에게 전달한다.</p>
+
+<h3 id="4-usernamepasswordtoken을-authentication-provider에게-전달">4. UsernamePasswordToken을 Authentication Provider에게 전달</h3>
+<p>AuthenticationManager는 전달받은 UsernamePasswordToken을 AuthenticationProvider에게 전달하여 실제 인증 과정을 수행한다. AuthenticationProvider은 입력한 값(token에서 꺼낼수 있음)과 5,6,7 과정을 통해 가져온 값(DB에서 가져온 것)을 비교한다.</p>
+
+<p>이 부분이 Custom을 한 구현방법과 차이나는 부분인데 이 방법에선 AuthenticationProvider을 따로 구현할필요가 없다. (AuthenticationProvider에 DaoAuthenticationProvider이 사용된다)</p>
+
+<h3 id="5-6-7-db에서-user정보-userdetailsservice를-통해-userdetails형태로-가져오기">5, 6, 7. DB에서 User정보 UserDetailsService를 통해 UserDetails형태로 가져오기</h3>
+<p>따로 설명하면 더 헷갈리므로 묶어서 설명하겠다. AuthenticationProvider에서 아이디를 조회하였으면 UserDetailsService로부터 아이디를 기반으로 데이터를 조회해야 한다. UserDetailService는 인터페이스이기 때문에 이를 구현한 클래스를 작성해야 한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequiredArgsConstructor</span>
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDetailsServiceImpl</span> <span class="kd">implements</span> <span class="nc">UserDetailsService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserRepository</span> <span class="n">userRepository</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">UserDetails</span> <span class="nf">loadUserByUsername</span><span class="o">(</span><span class="nc">String</span> <span class="n">username</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span>  <span class="n">userRepository</span><span class="o">.</span><span class="na">findByUsername</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">user</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">UserDetailsImpl</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>UserDetailsServiceImpl의 반환형이 UserDetails이다. User를 담을 UserDetails을 구현해보자</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Data</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDetailsImpl</span> <span class="kd">implements</span> <span class="nc">UserDetails</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">User</span> <span class="n">user</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">UserDetailsImpl</span><span class="o">(</span><span class="nc">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">user</span> <span class="o">=</span> <span class="n">user</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//해당 User의 권한을 리턴하는 곳!</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Collection</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">GrantedAuthority</span><span class="o">&gt;</span> <span class="nf">getAuthorities</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">GrantedAuthority</span><span class="o">&gt;</span> <span class="n">collection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">collection</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">GrantedAuthority</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getAuthority</span><span class="o">()</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="na">getRole</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="k">return</span> <span class="n">collection</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getPassword</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getUsername</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isAccountNonExpired</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isAccountNonLocked</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isCredentialsNonExpired</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEnabled</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="8-인증-처리-후-인증된-토큰을-authentication-manager에게-반환">8. 인증 처리 후 인증된 토큰을 Authentication Manager에게 반환</h3>
+<p>이제 AuthenticationProvider(현재 구현체 - DaoAuthenticationProvider)에서 UserDetailsServices를 통해 얻어낸 UserDetails와 입력으로 부터 들어온 비밀번호를 PasswordEncoder를 통해 암호화한 것과 비교하여 유효성을 확인하고 Authentication을 반환해준다.</p>
+
+<h3 id="9-인증된-토큰을-authenticationfilter에게-전달">9. 인증된 토큰을 AuthenticationFilter에게 전달</h3>
+<p>AuthenticationProvider에서 받은 Authentication을 AuthenticationFilter에게 반환</p>
+
+<h3 id="10-인증된-토큰을-securitycontextholder에-저장">10. 인증된 토큰을 SecurityContextHolder에 저장</h3>
+<p>Authentication객체를 SecurityContextHolder에 저장하면 인증이 끝난다.</p>
+
+<p><a href="https://github.com/parkmuhyeun/DaoAuthenticationProvider/tree/master">github 코드</a></p>
+
+<h2 id="custom-method">Custom Method</h2>
+<p>위에서 기본적인 방법을 알아봤으니 AuthenticationProvider을 직접 Custom하는 방식을 알아보자. 외부, 타사 서비스(예를들어 Crowd) 같은 것에 대해 인증하기위해서는 Custom한 Authentication Provider를 구현해야한다. Standard방식에서 추가적으로 CustomAuthenticationProvider를 구현하고 Config에 등록만 하면 된다.</p>
+
+<h3 id="4-usernamepasswordtoken을-authenticationprovider에게-전달">4. UsernamePasswordToken을 AuthenticationProvider에게 전달</h3>
+<p>Standard 방식에서 4, 8번 과정인 AuthenticationProvider 부분만 달라지고 나머지 부분은 윗 부분과 동일하다. AuthenticationManager는 전달받은 UsernamePasswordToken을 AuthenticationProvider에게 전달하여 실제 인증 과정을 수행하며, 실제 인증에 대한 부분은 authenticate 함수에 작성하면 된다. Spring Security에서는 Username으로 DB에서 데이터를 조회한다음, 비밀번호의 일치 여부를 검사하는 방식으로 작동.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomAuthenticationProvider</span> <span class="kd">implements</span> <span class="nc">AuthenticationProvider</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Authentication</span> <span class="nf">authenticate</span><span class="o">(</span><span class="nc">Authentication</span> <span class="n">authentication</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">AuthenticationException</span> <span class="o">{</span>
+        <span class="nc">UsernamePasswordAuthenticationToken</span> <span class="n">token</span> <span class="o">=</span> <span class="o">(</span><span class="nc">UsernamePasswordAuthenticationToken</span><span class="o">)</span> <span class="n">authentication</span><span class="o">;</span>
+
+        <span class="c1">//입력한 ID, Password 조회</span>
+        <span class="nc">String</span> <span class="n">userEmail</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">userPw</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">token</span><span class="o">.</span><span class="na">getCredentials</span><span class="o">();</span>
+
+        <span class="c1">// 아래 코드는 8번에서 설명</span>
+        <span class="o">...</span>
+
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supports</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">authentication</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">authentication</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="nc">UsernamePasswordAuthenticationToken</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h3 id="8-인증-처리-후-인증된-토큰을-authenticationmanager에게-반환">8. 인증 처리 후 인증된 토큰을 AuthenticationManager에게 반환</h3>
+<p>5, 6, 7 방법으로 UserDetetailsService를 통해 DB에서 조회한 유저 정보와 입력받은 비밀번호가 일치하는지 확인하고, 일치하면 인증된 토큰을 생성하여 반환해주어야 한다. DB에 저장된 유저 비밀번호는 암호화 되어있기 때문에, 입력된 비밀번호를 PasswordEncoder를 통해 암호화하여 DB에서 조회한 사용자의 비밀번호와 매칭되는지 확인한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomAuthenticationProvider</span> <span class="kd">implements</span> <span class="nc">AuthenticationProvider</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserDetailsService</span> <span class="n">userDetailsService</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">BCryptPasswordEncoder</span> <span class="n">passwordEncoder</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Authentication</span> <span class="nf">authenticate</span><span class="o">(</span><span class="nc">Authentication</span> <span class="n">authentication</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">AuthenticationException</span> <span class="o">{</span>
+        <span class="nc">UsernamePasswordAuthenticationToken</span> <span class="n">token</span> <span class="o">=</span> <span class="o">(</span><span class="nc">UsernamePasswordAuthenticationToken</span><span class="o">)</span> <span class="n">authentication</span><span class="o">;</span>
+
+        <span class="c1">//입력한 ID, Password 조회</span>
+        <span class="nc">String</span> <span class="n">userId</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">userPw</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">token</span><span class="o">.</span><span class="na">getCredentials</span><span class="o">();</span>
+
+        <span class="c1">//UserDetailsService를 통해 DB에서 조회한 사용자</span>
+        <span class="nc">UserDetailsImpl</span> <span class="n">dbUser</span> <span class="o">=</span> <span class="o">(</span><span class="nc">UserDetailsImpl</span><span class="o">)</span> <span class="n">userDetailsService</span><span class="o">.</span><span class="na">loadUserByUsername</span><span class="o">(</span><span class="n">userId</span><span class="o">);</span>
+
+        <span class="c1">// 비밀번호 매칭되는지 확인</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">passwordEncoder</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="n">userPw</span><span class="o">,</span> <span class="n">dbUser</span><span class="o">.</span><span class="na">getPassword</span><span class="o">()))</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BadCredentialsException</span><span class="o">(</span><span class="n">dbUser</span><span class="o">.</span><span class="na">getUsername</span><span class="o">()</span> <span class="o">+</span> <span class="s">"Invalid password"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">UsernamePasswordAuthenticationToken</span><span class="o">(</span><span class="n">dbUser</span><span class="o">,</span> <span class="n">userPw</span><span class="o">,</span> <span class="n">dbUser</span><span class="o">.</span><span class="na">getAuthorities</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">supports</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">authentication</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">authentication</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="nc">UsernamePasswordAuthenticationToken</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위와 같이 완성된 CustomAuthenticationProvider를 SecurityConfig에 Bean으로 등록해주고 AuthenticationManager에 넣어주자.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSecurity</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">UserDetailsService</span> <span class="n">userDetailsService</span><span class="o">;</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">BCryptPasswordEncoder</span> <span class="nf">encoderPwd</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">BCryptPasswordEncoder</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">// CustomAuthenticationProvider 빈 등록</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">CustomAuthenticationProvider</span> <span class="nf">customAuthenticationProvider</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">CustomAuthenticationProvider</span><span class="o">(</span><span class="n">userDetailsService</span><span class="o">,</span> <span class="n">encoderPwd</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">WebSecurity</span> <span class="n">web</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">web</span><span class="o">.</span><span class="na">ignoring</span><span class="o">().</span>
+                <span class="n">requestMatchers</span><span class="o">(</span><span class="nc">PathRequest</span><span class="o">.</span><span class="na">toStaticResources</span><span class="o">().</span><span class="na">atCommonLocations</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span><span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">();</span>
+        <span class="n">http</span><span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/user/**"</span><span class="o">).</span><span class="na">authenticated</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/admin/**"</span><span class="o">).</span><span class="na">access</span><span class="o">(</span><span class="s">"hasRole('ROLE_ADMIN')"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">permitAll</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">formLogin</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">loginProcessingUrl</span><span class="o">(</span><span class="s">"/login"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">loginPage</span><span class="o">(</span><span class="s">"/loginForm"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">defaultSuccessUrl</span><span class="o">(</span><span class="s">"/"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">//AuthenticationManager에 Provider등록</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">AuthenticationManagerBuilder</span> <span class="n">auth</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">auth</span><span class="o">.</span><span class="na">authenticationProvider</span><span class="o">(</span><span class="n">customAuthenticationProvider</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>로그인에 성공하고나면 SecurityContextHolder라는 세션을 활용해 로그인이 유지된다.</p>
+
+<p><a href="https://github.com/parkmuhyeun/CustomAuthenticationProvider">github 코드</a></p>
+
+<p>참고</p>
+<ul>
+  <li><a href="https://www.baeldung.com/spring-security-authentication-provider">https://www.baeldung.com/spring-security-authentication-provider</a></li>
+  <li><a href="https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authenticationmanager">https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authenticationmanager</a></li>
+  <li><a href="https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html#servlet-authentication-daoauthenticationprovider">https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/dao-authentication-provider.html#servlet-authentication-daoauthenticationprovider</a></li>
+  <li><a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html">https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html</a></li>
+  <li><a href="https://mangkyu.tistory.com/77">https://mangkyu.tistory.com/77</a></li>
+</ul>
+
+<p>*틀린 부분이 있으면 언제든지 말씀해 주시면 공부해서 수정하겠습니다.</p>
+
+  
+</article>
+
+
+
+  <hr class="dingbat related mb6" />
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T765T1JLEW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T765T1JLEW');
+</script>
+
+
+
+
+  
+     
+
+
+  <aside class="about related mt4 mb4" role="complementary">
+    
+    
+
+<div class="author mt4">
+  
+
+  
+
+  
+  
+  <h2  class="page-title hr-bottom">
+    About
+  </h2>
+
+  <p>반갑습니다. 백엔드 개발자 박무현입니다.</p>
+
+
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+
+  </aside>
+
+
+  
+
+  
+  
+
+  
+    
+
+
+  <aside class="related mb4" role="complementary">  <h2 class="hr-bottom">Related Posts</h2>  <ul class="related-posts">                  <li class="h4">  <a href="/study/http%20web/2022-04-03-Uri-Webbrowser/" class="flip-title"><span>Uri-Webbrowser</span></a>  <time class="faded fine" datetime="2022-04-03T00:00:00+00:00">03 Apr 2022</time></li>                        <li class="h4">  <a href="/study/http%20web/2022-03-27-Internet-Network/" class="flip-title"><span>Internet Network</span></a>  <time class="faded fine" datetime="2022-03-27T00:00:00+00:00">27 Mar 2022</time></li>                        <li class="h4">  <a href="/study/spring/2022-03-11-Spring(7)/" class="flip-title"><span>빈 생명주기 콜백</span></a>  <time class="faded fine" datetime="2022-03-11T00:00:00+00:00">11 Mar 2022</time></li>            </ul></aside>
+
+  
+
+  
+  
+
+  
+    
+<aside class="comments related" role="complementary">
+  <h2>Comments</h2>
+  <script src="https://utteranc.es/client.js"
+        repo="parkmuhyeun/blog-comments-repo"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</aside>
+
+
+  
+
+
+  
+<footer class="content" role="contentinfo">
+  <hr/>
+  
+    <p><small class="copyright">© 2022. All rights reserved.
+</small></p>
+  
+    <p><small>Powered by 애송이</small></p>
+  <hr class="sr-only"/>
+</footer>
+
+
+</main>
+
+  <hy-drawer
+  id="_drawer"
+  class=""
+  side="left"
+  threshold="10"
+  noscroll
+  
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+
+
+
+
+<div class="sidebar-bg sidebar-overlay" style="background-color:rgb(8,46,57);background-image:url(/assets/img/sidebar-bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+  <div class="sidebar-about">
+    
+    <div class="sidebar-title" style="margin-bottom: 45px;">
+      <a class="sidebar-title" href="/"><h2 class="h1">애송이 개발 블로그</h2></a>
+    </div>
+  
+    
+      <a class="no-hover" href="/" tabindex="-1">
+        <img src="/assets/img/logo.jpg" class="avatar" alt="애송이 개발 블로그" width="120" height="120" loading="lazy" />
+      </a>
+    
+    
+    
+      <p class="">
+        끊임없이 생각하고 나아가는 개발자
+
+      </p>
+    
+  </div>
+
+  <nav class="sidebar-nav heading" role="navigation">
+    <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_drawer--opened"
+          href="/about/"
+          class="sidebar-nav-item "
+          
+        >
+          About
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/project/"
+          class="sidebar-nav-item "
+          
+        >
+          Project
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/study/"
+          class="sidebar-nav-item "
+          
+        >
+          Study
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/etc/"
+          class="sidebar-nav-item "
+          
+        >
+          Etc
+        </a>
+      </li>
+    
+  
+</ul>
+
+  </nav>
+
+  <div>
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fparkmuhyeun.github.io&count_bg=%23005666&title_bg=%23464964&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+  </div>
+
+  
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://parkmuhyeun.github.io" title="RSS" class="no-mark-external">
+      <span class="icon-rss2"></span>
+      <span class="sr-only">RSS</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+  
+</div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+
+</hy-push-state>
+
+
+  <!--[if gt IE 10]><!---->
+  <script nomodule>!function(){var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())}();
+</script>
+  <script src="/assets/js/hydejack-9.1.5.js" type="module"></script>
+  <script src="/assets/js/LEGACY-hydejack-9.1.5.js" nomodule defer></script>
+  
+
+  
+  <script>!function(w, d) {
+    w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    /**/
+      ga('create', 'G-T765T1JLEW', 'auto');
+    /**/
+
+    var pushStateEl = d.getElementById('_pushState');
+    var timeoutId;
+    pushStateEl.addEventListener('hy-push-state-load', function() {
+      w.clearTimeout(timeoutId);
+      timeoutId = w.setTimeout(function() {
+        ga('set', 'page', w.location.pathname);
+        ga('send', 'pageview');
+      }, 500);
+    });
+
+    d.addEventListener('hy--cookies-ok', function () {
+      w.ga(function(tracker) {
+        w.ga("set", "anonymizeIp", undefined);
+        localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId"));
+      });
+    });
+
+    w.loadJSDeferred('https://www.google-analytics.com/analytics.js');
+  }(window, document);</script>
+
+
+<!--<![endif]-->
+  
+
+
+
+<div hidden>
+  
+  <h2 class="sr-only">Templates (for web app):</h2>
+
+  <clap-config>
+    <clap-text at="1">Keep going!</clap-text>
+    <clap-text at="2">Keep going ×2!</clap-text>
+    <clap-text at="3">Give me more!</clap-text>
+    <clap-text at="5">Thank you, thank you</clap-text>
+    <clap-text at="7">Far too kind!</clap-text>
+    <clap-text at="10">Never gonna give me up?</clap-text>
+    <clap-text at="14">Never gonna let me down?</clap-text>
+    <clap-text at="20">Turn around and desert me!</clap-text>
+    <clap-text at="30">You're an addict!</clap-text>
+    <clap-text at="40">Son of a clapper!</clap-text>
+    <clap-text at="50">No way</clap-text>
+    <clap-text at="60">Go back to work!</clap-text>
+    <clap-text at="70">This is getting out of <em>hand</em></clap-text>
+    <clap-text at="80">Unbelievable</clap-text>
+    <clap-text at="90">PREPOSTEROUS</clap-text>
+    <clap-text at="100">I N S A N I T Y</clap-text>
+    <clap-text at="185"><span style="font-family:monospace">FEED ME A STRAY CAT</span></clap-text>
+  </clap-config>
+
+  <template id="_animation-template">
+  <div class="animation-main fixed-top">
+    <nav id="breadcrumbs" class="screen-only"><ul>
+  
+  
+</ul></nav>
+    <div class="content">
+      <div class="page"></div>
+    </div>
+  </div>
+</template>
+
+  <template id="_loading-template">
+  <div class="loading nav-btn fr">
+    <span class="sr-only">Loading…</span>
+    <span class="icon-cog"></span>
+  </div>
+</template>
+
+  <template id="_error-template">
+  <div class="page">
+    <h1 class="page-title">Error</h1>
+    
+    
+    <p class="lead">
+      Sorry, an error occurred while loading <a class="this-link" href=""></a>.
+
+    </p>
+  </div>
+</template>
+
+  <template id="_permalink-template">
+  <a href="#" class="permalink">
+    <span class="sr-only">Permalink</span>
+    <span class="content-hash"></span>
+  </a>
+</template>
+
+</div>
+
+
+</body>
+</html>
