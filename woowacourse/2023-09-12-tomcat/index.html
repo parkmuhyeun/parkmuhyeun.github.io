@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ko"><!--
+ __  __                __                                     __
+/\ \/\ \              /\ \             __                    /\ \
+\ \ \_\ \   __  __    \_\ \      __   /\_\      __       ___ \ \ \/'\
+ \ \  _  \ /\ \/\ \   /'_` \   /'__`\ \/\ \   /'__`\    /'___\\ \ , <
+  \ \ \ \ \\ \ \_\ \ /\ \L\ \ /\  __/  \ \ \ /\ \L\.\_ /\ \__/ \ \ \\`\
+   \ \_\ \_\\/`____ \\ \___,_\\ \____\ _\ \ \\ \__/.\_\\ \____\ \ \_\ \_\
+    \/_/\/_/ `/___/> \\/__,_ / \/____//\ \_\ \\/__/\/_/ \/____/  \/_/\/_/
+                /\___/                \ \____/
+                \/__/                  \/___/
+
+Powered by Hydejack v9.1.5 <https://hydejack.com/>
+--><head><title>우테코 - 톰캣 구현하기 미션 회고 (feat. 나도 톰캣 컨트리뷰터..?)</title><meta name="description" content="톰캣 구현하기 미션을 진행하면서 있었던 과정을 회고해보자 "><link rel="canonical" href="https://parkmuhyeun.github.io/woowacourse/2023-09-12-tomcat/"><meta name="keywords" content="spring,springboot,java,jpa"><meta name="theme-color" content="rgb(8,46,57)"><link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css"> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <script src="/assets/tipuesearch/tipuesearch_content.js"></script> <script src="/assets/tipuesearch/tipuesearch_set.js"></script> <script src="/assets/tipuesearch/tipuesearch.min.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="애송이 개발 블로그"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="application-name" content="애송이 개발 블로그"><meta name="generator" content="Hydejack v9.1.5" /><link rel="alternate" href="https://parkmuhyeun.github.io/woowacourse/2023-09-12-tomcat/" hreflang="ko-kr, en-us"><link type="application/atom+xml" rel="alternate" href="https://parkmuhyeun.github.io/feed.xml" title="애송이 개발 블로그" /><link rel="shortcut icon" href="/assets/icons/favicon.ico"><link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="dns-prefetch" href="https://fonts.googleapis.com"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preload" href="/assets/img/swipe.svg" as="image" id="_hrefSwipeSVG"> <script>!function(r,c){"use strict";function a(e,t,n,o){e.addEventListener?e.addEventListener(t,n,o):e.attachEvent?e.attachEvent("on"+t,n):e["on"+t]=n}r.loadJS=function(e,t){var n=c.createElement("script");n.src=e,t&&a(n,"load",t,{once:!0});t=c.scripts[0];return t.parentNode.insertBefore(n,t),n},r._loaded=!1,r.loadJSDeferred=function(e,t){var n=c.createElement("script");function o(){r._loaded=!0,t&&a(n,"load",t,{once:!0});var e=c.scripts[0];e.parentNode.insertBefore(n,e)}return n.src=e,r._loaded?o():a(r,"load",o,{once:!0}),n},r.setRel=r.setRelStylesheet=function(e){a(c.getElementById(e),"load",function(){this.rel="stylesheet"},{once:!0})}}(window,document); !function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this); !function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this); !function(w) { w._baseURL = '/'; w._publicPath = '/assets/js/'; w._noPushState = false; w._noDrawer = false; w._noNavbar = false; w._noToc = false; w._noSearch = false; w._search = { DATA_URL: '/assets/sitedata.json?no-cache', STORAGE_KEY: 'mini-search/', INDEX_KEY: 'index--2024-02-11T09:18:25+00:00', }; w._clapButton = false; }(window);</script> <script async src="/assets/bower_components/MathJax/es5/tex-mml-chtml.js" id="_MathJax"></script> <!--[if gt IE 8]><!----><style id="_styleInline"> .clearfix,.sidebar-social::after{content:"";display:table;clear:both}.color-transition,.content .avatar,.nav-btn,.nav-btn-bar,.navbar,.message,.note-sm,#markdown-toc,.note,.hr-bottom,.hr-after::after,hr,.hr,p,body{transition:none}html{--font-family: Noto Sans,Helvetica,Arial,sans-serif;--font-family-heading: Roboto Slab,Helvetica,Arial,sans-serif;--code-font-family: Fira Code,Menlo,Monaco,Consolas,monospace;--body-color: #333;--body-bg: #fff;--border-color: #ebebeb;--gray: #777;--gray-bg: rgba(0,0,0,0.025);--gray-text: #666;--menu-text: #bbb;--inv-body-color: #ccc;--inv-body-bg: #282828;--root-font-size: 15px;--root-font-size-medium: 16px;--root-font-size-large: 17px;--root-font-size-print: 8pt;--root-line-height: 1.75;--font-weight: 400;--font-weight-bold: 700;--font-weight-heading: 700;--content-width-5: 54rem;--content-margin-5: 4rem;--sidebar-width: 21rem;--half-content: 31rem;--break-point-3: 64em;--break-point-5: 86em;--break-point-dynamic: 1664px}html .content{-webkit-font-smoothing:initial;-moz-osx-font-smoothing:initial}*{box-sizing:border-box}html,body{margin:0;padding:0}html{font-family:var(--font-family);font-size:var(--root-font-size);line-height:var(--root-line-height)}body{color:var(--body-color);background-color:var(--body-bg);font-weight:var(--font-weight);overflow-y:scroll}.content img,.img,.content video,.video{max-width:100%;height:auto}.lead{margin-left:-1rem;margin-right:-1rem;margin-bottom:1.5rem}img.lead,video.lead{display:block;max-width:calc(100% + 2rem);width:calc(100% + 2rem);height:auto}.heading,.f6,h6,.h6,.f5,h5,.h5,.f4,.sidebar-nav-item,h4,.h4,.post-date,.f3,h3,.h3,.f2,h2,.h2,.f1,h1,.h1{font-family:var(--font-family-heading);font-weight:var(--font-weight-heading)}.f1,h1,.h1{font-size:2rem;line-height:1.3}.f2,h2,.h2{font-size:1.5rem;line-height:1.4}.f3,h3,.h3{font-size:1.2em;line-height:1.5}.f4,.sidebar-nav-item,h4,.h4,.post-date{font-size:1.08rem;line-height:1.6}.f5,h5,.h5{font-size:1.04rem;line-height:1.7}.f6,h6,.h6{font-size:1rem}.content h1>a,.content .h1>a{text-decoration:none;border-bottom:none}@media screen and (max-width: 42em){.content h1,.content .h1{font-size:1.7rem;line-height:1.35}}@media screen and (min-width: 86em){.content h1,.content .h1{font-size:2.4rem;line-height:1.25}}@media screen and (min-width: 1664px){body:not(.no-large-headings) .content h1,body:not(.no-large-headings) .content .h1{width:calc(100% + 50vw - 32rem);font-size:3rem;line-height:1.2}}@media screen and (min-width: 124em){body:not(.no-large-headings) .content h1,body:not(.no-large-headings) .content .h1{font-size:4rem;line-height:1.1}}h1,h2,h3,.h1,.h2,.h3{margin:4rem 0 1rem}h4,h5,h6,.h4,.post-date,.h5,.h6{margin:3rem 0 .5rem}p{margin-top:0;margin-bottom:1rem}p.lead{font-size:1.2em;margin-top:1.5rem;margin-bottom:1.5rem;padding:0 1rem}ul,ol,dl{margin-top:0;margin-bottom:1rem}ul,ol{padding-left:1.25rem}hr,.hr{border:0;margin:1rem 0;border-top:1px solid var(--border-color)}.hr-after::after{content:"";display:block;margin:1rem 0;border-top:1px solid var(--border-color)}.hr-bottom{border-bottom:1px solid var(--border-color);padding-bottom:.75rem;margin-bottom:1rem}.page{margin-bottom:3em}.page li+li{margin-top:.25rem}.page>header{position:relative;margin-bottom:1.5rem}@media screen and (min-width: 1664px){body:not(.no-third-column) .page>header>.lead+.note-sm,body:not(.no-third-column) .page>header>.lead+#markdown-toc,body:not(.no-third-column) .page>header>.lead+.note,body:not(.no-third-column) .page>header>a.no-hover+.note-sm,body:not(.no-third-column) .page>header>a.no-hover+#markdown-toc,body:not(.no-third-column) .page>header>a.no-hover+.note{position:absolute;right:-25rem;width:21rem;bottom:0;margin-bottom:0}}.page-title,.post-title{margin-top:0}.post-date{display:flex;justify-content:space-between;margin-top:-.6rem;height:2rem;margin-bottom:.85rem;color:var(--gray)}.post-date>.ellipsis,#breadcrumbs.post-date>ul{cursor:pointer}.post-date [class^="icon-"]{display:inline-block;font-size:smaller;margin-right:.25rem}.related-posts{padding-left:0;list-style:none;margin-bottom:2rem}.related-posts>li,.related-posts>li+li{margin-top:1rem}.message,.note-sm,#markdown-toc,.note{margin-bottom:1rem;padding:1rem;color:var(--gray-text);background-color:var(--gray-bg);margin-left:-1rem;margin-right:-1rem}.note-sm,#markdown-toc,.note{background:transparent;color:var(--body-color);font-size:smaller;border-left:1px solid var(--border-color);padding:1.2rem 1rem 0 1rem;margin:1rem -1rem;position:relative}.note-sm:before,#markdown-toc:before,.note:before{font-size:0.667rem;font-weight:bold;font-style:normal;letter-spacing:.025rem;text-transform:uppercase;color:var(--menu-text);position:absolute;top:0}.note-sm[title]:before,#markdown-toc[title]:before,.note[title]:before{content:attr(title) !important}.note{font-size:1rem}@media screen{body::before{content:'';width:.5rem;background:var(--gray-bg);position:fixed;left:0;top:0;bottom:0}}@media (min-width: 64em){body::before{width:21rem}}@media (min-width: 1664px){body::before{width:calc(50% - 31rem)}}@media screen and (min-width: 42em){html{font-size:var(--root-font-size-medium)}}@media screen and (min-width: 124em){html{font-size:var(--root-font-size-large)}}#breadcrumbs>ul{height:1rem;margin:-1.5rem 0 .5rem;padding:0;font-size:.667rem;color:var(--menu-text);text-transform:uppercase;width:100%;list-style:none}#breadcrumbs>ul>li{display:inline}#breadcrumbs>ul>li a{color:var(--gray);text-decoration:none;border-bottom:none}.fl{float:left}.fr{float:right}.mb4{margin-bottom:4rem}.mb6{margin-bottom:6rem}.mt0{margin-top:0}.mt1{margin-top:1rem}.mt2{margin-top:2rem}.mt3{margin-top:3rem}.mt4{margin-top:4rem}.pb0{padding-bottom:0}.ml1{margin-left:1rem}.mr1{margin-right:1rem}.sixteen-nine{position:relative}.sixteen-nine::before{display:block;content:"";width:100%;padding-top:56.25%}.sixteen-nine>*{position:absolute;top:0;left:0;right:0;bottom:0}.sixteen-ten{position:relative}.sixteen-ten::before{display:block;content:"";width:100%;padding-top:62.5%}.sixteen-ten>*{position:absolute;top:0;left:0;right:0;bottom:0}.four-three{position:relative}.four-three::before{display:block;content:"";width:100%;padding-top:75%}.four-three>*{position:absolute;top:0;left:0;right:0;bottom:0}.sr-only{display:none}.larger{font-size:larger}.smaller{font-size:smaller}.clearfix,.sidebar-social::after{content:"";display:table;clear:both}.ellipsis,#breadcrumbs>ul{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.border{border:1px solid var(--border-color)}@media (min-width: 42em){.border-radius,.lead,.page .aspect-ratio.sixteen-nine.lead{border-radius:.5rem}}.fallback-img{background-position:center;background-repeat:no-repeat;background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjkwIiB2aWV3Qm94PSIwIDAgMTYwIDkwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuMDQ4ODI4LCAwLCAwLCAwLjA0Nzk5MSwgNTQuOTk5OTczLCAyMC40MjgxNDgpIj4KICAgIDxwYXRoIHN0eWxlPSJmaWxsOnJnYmEoMTI4LDEyOCwxMjgsLjMzKSIgZD0iTTk1OS44ODQgMTI4YzAuMDQwIDAuMDM0IDAuMDgyIDAuMDc2IDAuMTE2IDAuMTE2djc2Ny43N2MtMC4wMzQgMC4wNDAtMC4wNzYgMC4wODItMC4xMTYgMC4xMTZoLTg5NS43N2MtMC4wNDAtMC4wMzQtMC4wODItMC4wNzYtMC4xMTQtMC4xMTZ2LTc2Ny43NzJjMC4wMzQtMC4wNDAgMC4wNzYtMC4wODIgMC4xMTQtMC4xMTRoODk1Ljc3ek05NjAgNjRoLTg5NmMtMzUuMiAwLTY0IDI4LjgtNjQgNjR2NzY4YzAgMzUuMiAyOC44IDY0IDY0IDY0aDg5NmMzNS4yIDAgNjQtMjguOCA2NC02NHYtNzY4YzAtMzUuMi0yOC44LTY0LTY0LTY0djB6Ii8+CiAgICA8cGF0aCBzdHlsZT0iZmlsbDpyZ2JhKDEyOCwxMjgsMTI4LC4zMykiIGQ9Ik04MzIgMjg4YzAgNTMuMDIwLTQyLjk4IDk2LTk2IDk2cy05Ni00Mi45OC05Ni05NiA0Mi45OC05NiA5Ni05NiA5NiA0Mi45OCA5NiA5NnoiLz4KICAgIDxwYXRoIHN0eWxlPSJmaWxsOnJnYmEoMTI4LDEyOCwxMjgsLjMzKSIgZD0iTTg5NiA4MzJoLTc2OHYtMTI4bDIyNC0zODQgMjU2IDMyMGg2NGwyMjQtMTkyeiIvPgogIDwvZz4KPC9zdmc+")}hy-push-state a{color:var(--body-color)}@supports not ((text-decoration-thickness: initial) and (text-underline-offset: initial)){hy-push-state a{text-decoration:none;border-bottom:2px solid}}@supports (text-decoration-thickness: initial) and (text-underline-offset: initial){hy-push-state a{text-decoration-style:solid;text-underline-offset:.35rem;text-decoration-thickness:2px}}hy-push-state a.no-hover{border-bottom:none;text-decoration-thickness:unset;text-underline-offset:unset}.content a:not(.btn):not(.no-hover){border-color:var(--accent-color-faded)}@supports (text-decoration-thickness: initial) and (text-underline-offset: initial){.content a:not(.btn):not(.no-hover){text-decoration-color:var(--accent-color-faded)}}.content .aspect-ratio{overflow:hidden}.content .aspect-ratio img{margin:0;width:100%;height:100%;background-color:var(--gray-bg)}hy-drawer{width:100%;position:relative;overflow:hidden;display:block;z-index:4}@media screen and (min-width: 64em){hy-drawer{position:fixed;width:21rem;top:0;left:0;bottom:0;margin-left:0}hy-drawer.cover{position:relative;width:100%}}@media screen and (min-width: 1664px){hy-drawer{width:calc(50% - 31rem)}}.sidebar{position:relative;display:flex;justify-content:center;align-items:center;color:rgba(255,255,255,0.75);text-align:center;min-height:100vh}.sidebar.invert{color:rgba(32,32,32,0.75)}.sidebar a{color:#fff;border-bottom-color:rgba(255,255,255,0.2);text-decoration-color:rgba(255,255,255,0.2)}.sidebar.invert a{color:#222;border-bottom-color:rgba(32,32,32,0.2);text-decoration-color:rgba(32,32,32,0.2)}.sidebar-bg{position:absolute;top:0;left:calc(50% - 50vw);width:100vw;height:100%;background:#202020 center / cover}.sidebar-bg::after{content:"";position:absolute;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.05)}.sidebar-bg.sidebar-overlay::after{background:linear-gradient(to bottom, rgba(32,32,32,0) 0%, rgba(32,32,32,0.5) 50%, rgba(32,32,32,0) 100%)}.sidebar-sticky{position:relative;z-index:3;max-width:21rem;padding:1.5rem;contain:content}.sidebar-about .avatar{margin-bottom:1.5rem}.sidebar-about>a.sidebar-title{text-decoration:none}.sidebar-about>a.sidebar-title>h2{margin:0;padding-bottom:.5rem}.sidebar-about>a.sidebar-title::after{content:'';display:block;border-bottom:2px solid;margin:0 auto .5rem;width:4rem;border-color:rgba(255,255,255,0.2);transition:border-color 250ms}.sidebar-about>a.sidebar-title:hover::after{border-color:#fff;transition:border-color 50ms}.sidebar.invert .sidebar-about>a.sidebar-title::after{border-color:rgba(32,32,32,0.2)}.sidebar.invert .sidebar-about>a.sidebar-title:hover::after{border-color:#222}.sidebar-nav>ul{list-style:none;padding-left:0}.sidebar-nav-item{display:inline-block;margin-bottom:.5rem}@media (min-width: 64em){#_main.no-drawer #_menu{display:none}#_main.no-drawer .nav-btn-bar>:nth-child(2){border:none}}.sidebar-social>ul{display:inline-block;list-style:none;padding-left:0;margin-bottom:0}.sidebar-social>ul>li{float:left}.sidebar-social>ul>li>a{display:inline-block;text-align:center;font-size:1.4rem;width:3rem;height:4rem;padding:.5rem 0;line-height:3rem;text-decoration:none;border-bottom-width:2px;border-bottom-style:solid}.sidebar-social>ul li+li{margin-top:0}.fixed-common,.fixed-bottom,.fixed-top{position:fixed;left:0;width:100%;z-index:2}.fixed-top{top:0}.fixed-bottom{bottom:0}.navbar>.content{position:relative;padding-top:0;padding-bottom:0;min-height:0;max-height:5rem}.nav-btn-bar{margin:0 -1rem;background-color:white;background-color:var(--body-bg);height:5rem;display:flex;align-items:center;position:relative}.nav-btn-bar>:first-child,.nav-btn-bar>:last-child{border:none}.nav-btn{background:none;border:none;text-decoration:none;display:flex;align-items:center;justify-content:center;width:3.25rem;height:5rem;color:var(--menu-text);border-right:1px solid var(--border-color);border-left:1px solid var(--border-color);margin-left:-1px}#markdown-toc{margin:2rem -1rem 2rem calc(-1rem + 1px);padding-left:2.5rem;padding-bottom:.5rem}#markdown-toc:before{left:1rem}@media screen and (min-width: 1664px){body:not(.no-toc) #markdown-toc{position:absolute;z-index:4;width:20.5rem;right:0;margin:auto;overflow:auto}}@media screen and (min-width: 1664px){body.no-break-layout:not(.no-toc) #markdown-toc{width:calc(50% - 31rem)}}.content{margin-left:auto;margin-right:auto;padding:8rem 1rem 12rem}@media screen{.content{padding-left:1.5rem;min-height:100vh}}@media screen and (min-width: 42em){.content{max-width:42rem}}@media screen and (min-width: 54em){.content{max-width:48rem}}@media screen and (min-width: 64em){.content{padding-left:1rem;margin-left:24rem;margin-right:3rem}}@media screen and (min-width: 86em){.content{padding-top:9rem;margin-left:25rem;margin-right:4rem;max-width:54rem}}@media screen and (min-width: 1664px){.content{margin:auto}}.large-only{display:none}@media screen and (min-width: 1664px){.large-only{display:block}}.avatar{width:7rem;height:7rem;border-radius:100%;overflow:hidden;display:inline-block}.avatar img{width:100%}.content .avatar{float:right;box-sizing:content-box;border:1rem solid var(--body-bg);transition:border-color 1s ease;margin-top:-1.5rem;margin-right:-1rem}.note:before{content:"Note"}.page>header>.note-sm:before,.page>header>.note:before,.page>header>#markdown-toc:before{content:"Description"}#markdown-toc:before{content:"Table of Contents"}.layout-resume .note-sm:before,.layout-resume .note:before,.layout-resume #markdown-toc:before{content:"Summary"}</style><link rel="preload" as="style" href="/assets/css/hydejack-9.1.5.css" id="_stylePreload"><link rel="preload" as="style" href="/assets/icomoon/style.css" id="_iconsPreload"><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap" id="_fontsPreload"> <script> setRel('_stylePreload'); setRel('_iconsPreload'); /**/setRel('_fontsPreload');/**/ </script> <noscript><link rel="stylesheet" href="/assets/css/hydejack-9.1.5.css"><link rel="stylesheet" href="/assets/icomoon/style.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:700%7CNoto+Sans:400,400i,700,700i&display=swap"> </noscript><style id="_pageStyle"> html{--accent-color: rgb(79,177,186);--accent-color-faded: rgba(79,177,186,0.5);--accent-color-highlight: rgba(79,177,186,0.1);--accent-color-darkened: #409ba3;--theme-color: rgb(8,46,57)}</style><!--<![endif]--><body class="no-break-layout"> <hy-push-state id="_pushState" replace-selector="#_main" link-selector="a[href]:not([href^='/assets/']):not(.external):not(.no-push-state)" script-selector="script" duration="500" hashchange ><div id="_navbar" class="navbar fixed-top"><div class="content"> <span class="sr-only">Jump to:</span><div class="nav-btn-bar"> <a id="_menu" class="nav-btn no-hover" href="#_drawer--opened"> <span class="sr-only">Navigation</span> <span class="icon-menu"></span> </a> <!--상단메뉴 카테고리들 --><div class="top-menu"> <a id="_drawer--opened" href="/about/" class="nav-btn top-menu " > About </a> <a href="/study/" class="nav-btn top-menu " > Study </a> <a href="/etc/" class="nav-btn top-menu " > Etc </a> <a href="/woowacourse/" class="nav-btn top-menu " > 우테코 5기 </a></div><div class="nav-span"> <form action="/search"><div class="tipue_search_left"> <img src="/assets/tipuesearch/search.png" class="tipue_search_icon"></div><div class="tipue_search_right"> <input type="text" name="q" id="tipue_search_input" placeholderpattern=".{1,}" title="At least 1 characters" required></div><div style="clear: both;"></div></form></div></div></div></div><hr class="sr-only" hidden /><main id="_main" class="content layout-post" role="main" ><nav id="breadcrumbs" class="screen-only"><ul><li><a href="/">home</a><li> <span>/</span> <a href="/woowacourse/">woowacourse</a><li> <span>/</span> <span>2023-09-12-tomcat</span></ul></nav><article id="post-woowacourse-tomcat" class="page post mb6" role="article"><header><h1 class="post-title flip-project-title"> 우테코 - 톰캣 구현하기 미션 회고 (feat. 나도 톰캣 컨트리뷰터..?)</h1><div class="post-date"> <span class="ellipsis mr1"> <time datetime="2023-09-12T00:00:00+00:00">12 Sep 2023</time> in <a href="/woowacourse/" class="flip-title">woowacourse</a> on <span>Woowacourse</span>, <span>Tomcat</span> </span></div><p class="note-sm" > 톰캣 구현하기 미션을 진행하면서 있었던 과정을 회고해보자</header><p><img src="/assets/img/blog/woowacourse/tom_1.png" alt="" /><p>레벨 1, 2 때 미션을 하면서 느낀 점이 우선 구현(리팩터링을 약간 곁들인)을 하고 나서 추가시간을 들여 리팩터링을 하는 게 좋을 것 같다고 느꼈는데 이번 미션에 적용해 봄으로써 확실히 이게 내 개발 라이프 사이클인 것을 체감했다. 이전에는 구현을 하면서 동시에 리팩터링도 빡세게 하려다 보니 오히려 비즈니스 로직과 확장성이 머릿속에서 겹쳐서 뇌에 과부하가 와 시간이 굉장히 오래 걸렸다.<p>하지만, 이번에는 처음에 구현에 초점을 많이 맞추고 구현이 끝나고 난 뒤 추가적으로 리팩터링을 하였는데 시간적으로도 여유로웠고 관심사를 분리하니깐 머릿속으로도 여유로웠다. 한 가지 아쉬웠던 점은 이번에는 좀 극적으로 많이 구현에만 집중을 하고 리팩터링을 마지막에 몰아서 했었는데 그것보다는 구현을 하다가 리팩터링 할 때가 딱 보일 때, 그 적절한 때 하는 것이 베스트 인 것 같다. 물론 그 적절한 때를 찾기가 쉽지는 않겠지만 연습하다 보니 조금씩 감이 잡혀가는 것 같다.<p>요즘 설계에 관심이 많은데 다음 미션 때는 패키지 의존 쪽에 대해서도 고려를 해서 짜보면 좋을 것 같다. 다음 미션이 MVC 구현이라 요구사항이 빡세서 가능할진 모르겠지만… ㅋㅋ<p>자 이제 미션을 되돌아 보자~ 전체 코드는 해당 <a href="https://github.com/parkmuhyeun/jwp-dashboard-http/tree/step2">저장소</a>에 있습니다.<h2 id="톰캣을-구현해라">톰캣을 구현해라</h2><p><img src="/assets/img/blog/woowacourse/tom_2.jpeg" alt="" /><p>ㅖ…? 갑자기 톰캣을 구현하라고 하니깐 뭐부터 해야 될지 막막했다 ㅋㅋㅋ 나는 그동안 편리한 스프링 부트를 사용하였고, 그 안에 내장 톰캣이 알아서 돌아가고 있었기 때문에 막상 톰캣이 어떻게 돌아가는지는 생각해 본 적은 없는 것 같다. 그래서 톰캣이 어떻게 작동되는지부터 파악할 필요가 있었다.<h3 id="1-클라이언트-커넥션-수락">1. 클라이언트 커넥션 수락</h3><p>커넥터(Connector)는 클라이언트와의 통신을 처리하는데 서버의 특정 TCP 포트 번호에서 연결을 수신하고 요청 처리와 응답을 생성한다고 한다. 해당 구현 부분을 보면 다음과 같다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">connect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">process</span><span class="o">(</span><span class="n">serverSocket</span><span class="o">.</span><span class="na">accept</span><span class="o">());</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div><p>대충 예측해 보면 serverSocket이 수락한다는 거 같은데 어떤 메서드일까?<blockquote><p>Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made.</blockquote><p>이 소켓에 연결이 이루어질 때까지 기다렸다가 연결을 수락한다고 나와 있다. 클라이언트가 요청을 보내면 기다리던 serverSocket이 연결을 수락하고, 클라이언트와 데이터를 주고받을 수 있게 된다.<h3 id="2-요청-메시지-수신">2. 요청 메시지 수신</h3><p>이제 연결을 했으니 클라이언트에게 받은 데이터를 읽어야겠죠?<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="kt">var</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+             <span class="kd">final</span> <span class="kt">var</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+
+            <span class="o">...</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">UncheckedServletException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div><p>InputStream을 통해 HTTP 요청 메시지를 네트워크로부터 읽는다. InputStream은 바이트 기반 입력 스트림 최상위 추상 클래스이고 XXXInputStream이라는 네이밍을 가진 하위 클래스들이 있다. 그리고 문자 단위 입력을 위한 최상위 입력 스트림 클래스인 Reader(ex.BufferedReadaer)를 통해 좀 더 편리하게 문자를 받아볼 수도 있다.<h3 id="3-요청-처리-리소스-매핑과-접근-응답-생성">3. 요청 처리, 리소스 매핑과 접근, 응답 생성</h3><p>클라이언트에게 받은 데이터로 어떤 요청(ex. “POST /login”)을 처리할지 어떤 리소스(ex. login.html)에 접근할지를 정할 수 있을 것이고 이를 기반으로 응답을 생성할 것이다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="kt">var</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+             <span class="kd">final</span> <span class="kt">var</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">HttpRequest</span> <span class="n">httpRequest</span> <span class="o">=</span> <span class="no">HTTP_REQUEST_PARSER</span><span class="o">.</span><span class="na">convertToHttpRequest</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
+            <span class="nc">HttpResponse</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpResponse</span><span class="o">();</span>
+
+            <span class="nc">Controller</span> <span class="n">controller</span> <span class="o">=</span> <span class="no">FRONT_CONTROLLER</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">);</span>
+            <span class="n">controller</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">,</span> <span class="n">httpResponse</span><span class="o">);</span>
+
+            <span class="o">...</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">UncheckedServletException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div><p>위의 코드는 완성본이긴 하지만 슈도 코드를 살펴보자. InputStream을 통해 읽어들인 메시지를 기반으로 httpRequest를 생성하게 되고 해당 HttpRequest 안에는 HttpMethod, path, protocol 등… 요청 정보가 있다. 그리고 FRONT_CONTROLLER라는 클래스에서 해당 요청안의 path나 method를 보고 어떤 controller를 사용해야 될지 매핑을 해주고 해당 controller 로직을 처리한다.<p>해당 로직을 처리하게 되면 httpResponse 안에 각종 응답 정보(status code, header, body)들이 들어가게 되고 응답을 반환할 준비가 완료된다.<h3 id="4-응답-반환">4. 응답 반환</h3><p>응답을 반환할 준비가 되었으니 이제 응답을 반환할 수 있다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="kt">var</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+             <span class="kd">final</span> <span class="kt">var</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">HttpRequest</span> <span class="n">httpRequest</span> <span class="o">=</span> <span class="no">HTTP_REQUEST_PARSER</span><span class="o">.</span><span class="na">convertToHttpRequest</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
+            <span class="nc">HttpResponse</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpResponse</span><span class="o">();</span>
+
+            <span class="nc">Controller</span> <span class="n">controller</span> <span class="o">=</span> <span class="no">FRONT_CONTROLLER</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">);</span>
+            <span class="n">controller</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">,</span> <span class="n">httpResponse</span><span class="o">);</span>
+
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">joinResponse</span><span class="o">().</span><span class="na">getBytes</span><span class="o">());</span>
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">UncheckedServletException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div><p>httpReseponse.joinResponse()를 각종 응답 정보들을 String으로 Join 한 뒤 바이트로 변환해서 write 해주고 OutputStream을 통해 응답 헤더를 포함한 HTTP 응답 메시지를 생성한다. OutputStream은 바이트 기반 출력 스트림 최상위 추상 클래스이고 XXXOutputStream이라는 네이밍을 가진 하위 클래스들이 있다.<h2 id="구현-과정">구현 과정</h2><p>우선 요구사항은 다음과 같다. <details> <summary>요구사항</summary><div><h2 id="http-">1단계 - HTTP 구현하기</h2><ul class="task-list"><li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />GET /index.html 응답하기<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />CSS 지원하기<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Query String 파싱</ul><h2 id="section">2단계 - 로그인 구현하기</h2><ul class="task-list"><li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HTTP Status Code 302<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />POST 방식으로 회원가입<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Cookie에 JSESSIONID 값 저장하기<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session 구현하기</ul><h2 id="section-1">3단계 - 리팩토링</h2><ul class="task-list"><li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HttpRequest 클래스 구현하기<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HttpResponse 클래스 구현하기</ul><h2 id="section-2">4단계 - 동시성 확장하기</h2><ul class="task-list"><li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Executors로 Thread Pool 적용<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />동시성 컬렉션 사용하기</ul></div></details><p>처음에 구현에만 집중했기 때문에 메인 로직이 모두 Http11Processor 클래스에 모여있었다. 그래서 코드 줄 수를 보면 무려 260줄이… <details> <summary>첫 Http11Processor 코드</summary><div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http11</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">nextstep.jwp.db.InMemoryUserRepository</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.exception.UncheckedServletException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.exception.UserNotFoundException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.model.User</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.Cookie</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.HttpStatus</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.Processor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.Sessions</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.URL</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.Files</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.UUID</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Http11Processor</span> <span class="kd">implements</span> <span class="nc">Runnable</span><span class="o">,</span> <span class="nc">Processor</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">Http11Processor</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">STATIC_DIRECTORY</span> <span class="o">=</span> <span class="s">"static"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">SPACE</span> <span class="o">=</span> <span class="s">" "</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">QUERY_STRING_SEPARATOR</span> <span class="o">=</span> <span class="s">"\\?"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">MULTIPLE_QUERY_STRING_SEPARATOR</span> <span class="o">=</span> <span class="s">"&amp;"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">KEY_VALUE_SEPARATOR</span> <span class="o">=</span> <span class="s">"="</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">LINE_FEED</span> <span class="o">=</span> <span class="s">"\r\n"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">HTML_SUFFIX</span> <span class="o">=</span> <span class="s">".html"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">PATH_INDEX</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">PROTOCOL_INDEX</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="no">STATIC_PATH</span> <span class="o">=</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">".css"</span><span class="o">,</span> <span class="s">".js"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Http11Processor</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">=</span> <span class="n">connection</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"connect host: {}, port: {}"</span><span class="o">,</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInetAddress</span><span class="o">(),</span> <span class="n">connection</span><span class="o">.</span><span class="na">getPort</span><span class="o">());</span>
+        <span class="n">process</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="kt">var</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+             <span class="kd">final</span> <span class="kt">var</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+
+            <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">2048</span><span class="o">];</span>
+            <span class="n">inputStream</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+            <span class="kd">final</span> <span class="nc">String</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+
+            <span class="kd">final</span> <span class="nc">String</span> <span class="n">response</span> <span class="o">=</span> <span class="n">createResponse</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">UncheckedServletException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">createResponse</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+
+        <span class="nc">String</span> <span class="n">path</span> <span class="o">=</span> <span class="n">getPath</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">method</span> <span class="o">=</span> <span class="n">getMethod</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">prevPath</span> <span class="o">=</span> <span class="n">path</span><span class="o">;</span>
+        <span class="nc">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cookie</span><span class="o">();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cookies</span> <span class="o">=</span> <span class="n">cookie</span><span class="o">.</span><span class="na">getCookies</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">jsessionid</span> <span class="o">=</span> <span class="n">cookies</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"JSESSIONID"</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"GET"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">processGetRequest</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">jsessionid</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"POST"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"/login"</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">processLogin</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"/register"</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">processRegister</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">getStatus</span><span class="o">(</span><span class="n">prevPath</span><span class="o">,</span> <span class="n">path</span><span class="o">);</span>
+
+        <span class="nc">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">getRequestElement</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="no">PROTOCOL_INDEX</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="n">getContentType</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+
+        <span class="nc">String</span> <span class="n">content</span> <span class="o">=</span> <span class="n">getContent</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">contentLength</span> <span class="o">=</span> <span class="s">"Content-Length: "</span> <span class="o">+</span> <span class="n">content</span><span class="o">.</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">;</span>
+
+        <span class="nc">String</span> <span class="n">response</span> <span class="o">=</span> <span class="n">protocol</span> <span class="o">+</span>  <span class="no">SPACE</span> <span class="o">+</span> <span class="n">status</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">getJSessionId</span><span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">contentType</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">contentLength</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">getLocationIfRedirect</span><span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">path</span><span class="o">)</span> <span class="o">+</span>
+                <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">content</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getJSessionId</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cookie</span><span class="o">();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cookies</span> <span class="o">=</span> <span class="n">cookie</span><span class="o">.</span><span class="na">getCookies</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">cookies</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">"JSESSIONID"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">cookie</span><span class="o">.</span><span class="na">createCookie</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="s">""</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">processLogin</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">path</span><span class="o">;</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">splitRequestBody</span> <span class="o">=</span> <span class="n">getRequestBody</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">account</span> <span class="o">=</span> <span class="n">splitRequestBody</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+        <span class="nc">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">splitRequestBody</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="nc">InMemoryUserRepository</span><span class="o">.</span><span class="na">findByAccount</span><span class="o">(</span><span class="n">account</span><span class="o">).</span><span class="na">orElseThrow</span><span class="o">(</span><span class="nl">UserNotFoundException:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+            <span class="n">addSession</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">user</span><span class="o">);</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">getRedirectPath</span><span class="o">(</span><span class="n">password</span><span class="o">,</span> <span class="n">user</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">UserNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">path</span> <span class="o">=</span>  <span class="s">"/401.html"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addSession</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">,</span> <span class="nc">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Cookie</span> <span class="n">cookie</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Cookie</span><span class="o">();</span>
+        <span class="nc">Sessions</span> <span class="n">sessions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Sessions</span><span class="o">();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cookies</span> <span class="o">=</span> <span class="n">cookie</span><span class="o">.</span><span class="na">getCookies</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">jsessionid</span> <span class="o">=</span> <span class="n">cookies</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"JSESSIONID"</span><span class="o">);</span>
+        <span class="n">sessions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">jsessionid</span><span class="o">,</span> <span class="n">user</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">String</span><span class="o">[]</span> <span class="nf">getRequestBody</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">splitRequest</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="no">LINE_FEED</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">requestBody</span> <span class="o">=</span> <span class="n">splitRequest</span><span class="o">[</span><span class="n">splitRequest</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">].</span><span class="na">trim</span><span class="o">();</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">splitRequestBody</span> <span class="o">=</span> <span class="n">requestBody</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="no">MULTIPLE_QUERY_STRING_SEPARATOR</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">splitRequestBody</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">processRegister</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">splitRequestBody</span> <span class="o">=</span> <span class="n">getRequestBody</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">account</span> <span class="o">=</span> <span class="n">splitRequestBody</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+        <span class="nc">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">splitRequestBody</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s">"%40"</span><span class="o">,</span> <span class="s">"@"</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">splitRequestBody</span><span class="o">[</span><span class="mi">2</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+
+        <span class="nc">InMemoryUserRepository</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">account</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">email</span><span class="o">));</span>
+        <span class="k">return</span> <span class="s">"/index.html"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getLocationIfRedirect</span><span class="o">(</span><span class="nc">String</span> <span class="n">status</span><span class="o">,</span> <span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">status</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"302"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"Location: "</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="s">""</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getMethod</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getRequestElement</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getStatus</span><span class="o">(</span><span class="nc">String</span> <span class="n">prevPath</span><span class="o">,</span> <span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">isSamePage</span><span class="o">(</span><span class="n">prevPath</span><span class="o">,</span> <span class="n">path</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">prevPath</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">REDIRECT</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">()</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">REDIRECT</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">()</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isSamePage</span><span class="o">(</span><span class="nc">String</span> <span class="n">prevPath</span><span class="o">,</span> <span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">prevPath</span> <span class="o">+</span> <span class="no">HTML_SUFFIX</span><span class="o">).</span><span class="na">equals</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">processGetRequest</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">,</span> <span class="nc">String</span> <span class="n">jSessionId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isRequest</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">haveQueryString</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+               <span class="n">path</span> <span class="o">=</span> <span class="n">processLogin</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+               <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"/login"</span><span class="o">))</span> <span class="o">{</span>
+                <span class="nc">Sessions</span> <span class="n">sessions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Sessions</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">sessions</span><span class="o">.</span><span class="na">isAlreadyLogin</span><span class="o">(</span><span class="n">jSessionId</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="s">"/index.html"</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">path</span> <span class="o">+</span> <span class="no">HTML_SUFFIX</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+    <span class="o">}</span>
+
+   <span class="kd">private</span> <span class="nc">String</span> <span class="nf">processLogin</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+       <span class="nc">String</span> <span class="n">queryString</span> <span class="o">=</span> <span class="n">splitQueryString</span><span class="o">(</span><span class="n">path</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+       <span class="nc">String</span><span class="o">[]</span> <span class="n">splitQueryString</span> <span class="o">=</span> <span class="n">queryString</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"&amp;"</span><span class="o">);</span>
+       <span class="nc">String</span> <span class="n">account</span> <span class="o">=</span> <span class="n">splitQueryString</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+       <span class="nc">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">splitQueryString</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_SEPARATOR</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+       <span class="k">try</span> <span class="o">{</span>
+           <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="nc">InMemoryUserRepository</span><span class="o">.</span><span class="na">findByAccount</span><span class="o">(</span><span class="n">account</span><span class="o">).</span><span class="na">orElseThrow</span><span class="o">(</span><span class="nl">UserNotFoundException:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+           <span class="n">path</span> <span class="o">=</span> <span class="n">getRedirectPath</span><span class="o">(</span><span class="n">password</span><span class="o">,</span> <span class="n">user</span><span class="o">);</span>
+           <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+           <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+       <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">UserNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+           <span class="k">return</span> <span class="s">"/401.html"</span><span class="o">;</span>
+       <span class="o">}</span>
+   <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getRedirectPath</span><span class="o">(</span><span class="nc">String</span> <span class="n">password</span><span class="o">,</span> <span class="nc">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">path</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">checkPassword</span><span class="o">(</span><span class="n">password</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="s">"/index.html"</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="s">"/401.html"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">haveQueryString</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="no">QUERY_STRING_SEPARATOR</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">path</span><span class="o">).</span><span class="na">find</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getContentType</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="s">"Content-Type: "</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">isStaticPath</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">contentType</span> <span class="o">+</span> <span class="s">"text/css;charset=utf-8"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">contentType</span> <span class="o">+</span> <span class="s">"text/html;charset=utf-8"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isStaticPath</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">staticPath</span> <span class="o">:</span> <span class="no">STATIC_PATH</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="n">staticPath</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getContent</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"/"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"Hello world!"</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="no">URL</span> <span class="n">resource</span> <span class="o">=</span> <span class="n">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">().</span><span class="na">getResource</span><span class="o">(</span><span class="no">STATIC_DIRECTORY</span> <span class="o">+</span> <span class="n">path</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="nc">Files</span><span class="o">.</span><span class="na">readAllBytes</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">resource</span><span class="o">.</span><span class="na">getFile</span><span class="o">()).</span><span class="na">toPath</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getPath</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getRequestElement</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="no">PATH_INDEX</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isRequest</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="n">isStaticPath</span><span class="o">(</span><span class="n">path</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">path</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="no">HTML_SUFFIX</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span><span class="o">[]</span> <span class="nf">splitQueryString</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="no">QUERY_STRING_SEPARATOR</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">getRequestElement</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="no">SPACE</span> <span class="o">+</span> <span class="s">"|"</span> <span class="o">+</span> <span class="no">LINE_FEED</span><span class="o">)[</span><span class="n">index</span><span class="o">];</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div></div></details><p>Oh My Goodness… 🤮🤮🤮 하나의 클래스에 책임과 역활이 너무 많다. 하나씩 분리해보자<h3 id="httprequestparser-httprequest-분리">HttpRequestParser, HttpRequest 분리</h3><p><img src="/assets/img/blog/woowacourse/tom_3.png" alt="" /><p>HTTP 요청 메시지를 보면 위와 같이 매우 복잡하게 되어있다. start-line, header, empty line, message body가 있고 또 그 안에서도 나뉜다.<p>그래서 구현할 때 제일 거슬렸던 게 읽는 부분이었다. 읽을 때마다 split을 하고 split에 몇 번째를 가져오고 또 그걸 split을 하고 ㅋㅋㅋ 그래서 이 부분을 가장 먼저 분리하자고 마음먹었다. 그렇게 다음과 같이 HttpRequestParser을 통해 데이터를 읽고 HttpRequest를 만들어 낼 수 있도록 분리하였다. <details> <summary>HttpRequestParser, HttpRequest 코드</summary><div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.InputStreamReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpRequestParser</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">KEY_INDEX</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">VALUE_INDEX</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">HttpRequest</span> <span class="nf">convertToHttpRequest</span><span class="o">(</span><span class="nc">InputStream</span> <span class="n">inputStream</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">InputStreamReader</span> <span class="n">inputStreamReader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
+        <span class="nc">BufferedReader</span> <span class="n">bufferedReader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="n">inputStreamReader</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">firstLine</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span> <span class="o">=</span> <span class="n">readHeader</span><span class="o">(</span><span class="n">bufferedReader</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">HttpRequest</span><span class="o">(</span><span class="k">new</span> <span class="nc">StartLine</span><span class="o">(</span><span class="n">firstLine</span><span class="o">),</span> <span class="n">header</span><span class="o">,</span> <span class="n">readMessageBody</span><span class="o">(</span><span class="n">bufferedReader</span><span class="o">,</span> <span class="n">header</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">readHeader</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">bufferedReader</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">line</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">line</span><span class="o">.</span><span class="na">isBlank</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">String</span><span class="o">[]</span> <span class="n">split</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">);</span>
+            <span class="n">header</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">split</span><span class="o">[</span><span class="no">KEY_INDEX</span><span class="o">],</span> <span class="n">split</span><span class="o">[</span><span class="no">VALUE_INDEX</span><span class="o">].</span><span class="na">strip</span><span class="o">());</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">header</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">readMessageBody</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">bufferedReader</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">messageBody</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">contentLengthName</span> <span class="o">=</span> <span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">contentLengthName</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">contentLength</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">contentLengthName</span><span class="o">));</span>
+            <span class="kt">char</span><span class="o">[]</span> <span class="n">body</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="n">contentLength</span><span class="o">];</span>
+            <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">contentLength</span><span class="o">);</span>
+            <span class="n">messageBody</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.Collectors</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpRequest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">KEY_VALUE_DELIMITER</span> <span class="o">=</span> <span class="s">"="</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">KEY_INDEX</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">VALUE_INDEX</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">StartLine</span> <span class="n">startLine</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cookies</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">messageBody</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">HttpRequest</span><span class="o">(</span><span class="nc">StartLine</span> <span class="n">startLine</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span><span class="o">,</span> <span class="nc">String</span> <span class="n">messageBody</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">startLine</span> <span class="o">=</span> <span class="n">startLine</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">;</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="n">findCookies</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">messageBody</span> <span class="o">=</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">findCookies</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">header</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"Cookie"</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">split</span><span class="o">(</span><span class="s">"; "</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">Arrays:</span><span class="o">:</span><span class="n">stream</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">line</span> <span class="o">-&gt;</span> <span class="n">line</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="no">KEY_VALUE_DELIMITER</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toMap</span><span class="o">(</span><span class="n">line</span> <span class="o">-&gt;</span> <span class="n">line</span><span class="o">[</span><span class="no">KEY_INDEX</span><span class="o">],</span> <span class="n">line</span> <span class="o">-&gt;</span> <span class="n">line</span><span class="o">[</span><span class="no">VALUE_INDEX</span><span class="o">]));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">containsCookie</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">cookies</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getCookie</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">cookies</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addHeader</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">header</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">HttpMethod</span> <span class="nf">getMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span><span class="o">.</span><span class="na">getMethod</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getPath</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span><span class="o">.</span><span class="na">getPath</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getQueryStrings</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span><span class="o">.</span><span class="na">getQueryStrings</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">HttpProtocol</span> <span class="nf">getProtocol</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getHeader</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">header</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getMessageBody</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div></div></details><h4 id="requestbody를-읽을-때-무한루프에-빠지는-현상">RequestBody를 읽을 때 무한루프에 빠지는 현상</h4><p>HttpRequest를 좀 더 편리하게 읽기 위해 BufferedReader의 readLine()을 통해 읽었다. 하지만, 어느 부분에서 계속해서 무한 루프가 걸려서 브라우저가 계속 대기하는 현상이 일어났다. 해당 부분을 찾기 쉽지 않아 모든 곳에 디버깅을 걸어가며 확인한 결과 BufferedReader가 RequestBody 부분을 읽을 때 제대로 읽지 못하고 무한 루프가 발생하는 것을 발견하였다.<p>흠.. 수많은 삽질과 추론을 하다가 BufferedReader의 readLine()을 읽게 되었는데 다음과 같은 설명이 적혀있다.<blockquote><p>Reads a line of text. A line is considered to be terminated by any one of a line feed (‘\n’), a carriage return (‘\r’), a carriage return followed immediately by a line feed, or by reaching the end-of-file (EOF).</blockquote><p>텍스트 한 줄을 읽는데 줄 바꿈(‘\n’), 캐리지 리턴(‘\r’), 캐리지 리턴 다음 바로 줄 바꿈(‘\r\n’)이 오거나 EOF에 도달해야 종료된 것으로 간주한다는 것이다. 이걸 보고 HttpRequest의 내용을 쳐다봤다. start-line + CRLF + header + CRLF + message-body인데 message-body의 끝부분을 보면 위에서 해당하는 어떠한 것도 없다. 그래서 끝난지 모르고 계속해서 무한 루프를 돌고 있던 것이다! 🫢<p>그래서 RequestBody는 다음과 같이 read를 이용하여 contentLength 만큼 추가로 더 읽어주었다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">String</span> <span class="nf">readMessageBody</span><span class="o">(</span><span class="nc">BufferedReader</span> <span class="n">bufferedReader</span><span class="o">,</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">header</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">messageBody</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">contentLengthName</span> <span class="o">=</span> <span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">contentLengthName</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">contentLength</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">contentLengthName</span><span class="o">));</span>
+            <span class="kt">char</span><span class="o">[]</span> <span class="n">body</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="n">contentLength</span><span class="o">];</span>
+            <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">contentLength</span><span class="o">);</span>
+            <span class="n">messageBody</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div><h3 id="httpresponsebuilder-httpresponse-분리">HttpResponseBuilder, HttpResponse 분리</h3><p><img src="/assets/img/blog/woowacourse/tom_4.png" alt="" /><p>응답도 위와 같이 start-line, header, message body를 재구성 해줘야 되기 때문에 굉장히 중복된 부분이 많았다. 그래서 그다음 분리 대상으로 삼았고 HttpResponseBudiler를 이용해 HttpResponse를 생성할 수 있도록 분리하였다. 그리고 헤더를 추가할 때 기존의 헤더가 있으면 그 헤더에 추가적으로 추가할 수 있게 Header라는 추상 클래스를 만들고 콤마 구분자 헤더(ex. Cache-Control: no-cache, no-store, must-revalidate, max-age=0)와, 세미콜론 구분자 헤더(ex. Set-Cookie: a=b; c=d)를 분리했다. <details> <summary>HttpResponseBuilder, HttpResponse, Header 코드</summary><div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpResponseBuilder</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">LINE_FEED</span> <span class="o">=</span> <span class="s">"\r\n"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">SPACE</span> <span class="o">=</span> <span class="s">" "</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">HttpResponseBuilder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">buildStaticFileOkResponse</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">,</span> <span class="nc">HttpResponse</span> <span class="n">httpResponse</span><span class="o">,</span> <span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateFileMessageBody</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">NullPointerException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">buildStaticFileNotFoundResponse</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">,</span> <span class="n">httpResponse</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">joinStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">());</span>
+        <span class="nc">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">httpRequest</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">startLine</span> <span class="o">=</span> <span class="n">joinStartLine</span><span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">protocol</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateStartLine</span><span class="o">(</span><span class="n">startLine</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">ContentType</span><span class="o">.</span><span class="na">findType</span><span class="o">(</span><span class="n">path</span><span class="o">));</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getMessageBody</span><span class="o">().</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">buildStaticFileRedirectResponse</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">,</span> <span class="nc">HttpResponse</span> <span class="n">httpResponse</span><span class="o">,</span> <span class="nc">String</span> <span class="n">redirectPath</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">joinStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">REDIRECT</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">REDIRECT</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">());</span>
+        <span class="nc">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">httpRequest</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">startLine</span> <span class="o">=</span> <span class="n">joinStartLine</span><span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">protocol</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateStartLine</span><span class="o">(</span><span class="n">startLine</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateFileMessageBody</span><span class="o">(</span><span class="n">redirectPath</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">LOCATION</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">redirectPath</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">ContentType</span><span class="o">.</span><span class="na">HTML</span><span class="o">.</span><span class="na">getType</span><span class="o">());</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getMessageBody</span><span class="o">().</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">joinStatus</span><span class="o">(</span><span class="nc">String</span> <span class="n">statusCode</span><span class="o">,</span> <span class="nc">String</span> <span class="n">statusMessage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">statusCode</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="n">statusMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">joinStartLine</span><span class="o">(</span><span class="nc">String</span> <span class="n">status</span><span class="o">,</span> <span class="nc">String</span> <span class="n">protocol</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">protocol</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="n">status</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">buildStaticFileNotFoundResponse</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">,</span> <span class="nc">HttpResponse</span> <span class="n">httpResponse</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">joinStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">());</span>
+        <span class="nc">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">httpRequest</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">startLine</span> <span class="o">=</span> <span class="n">joinStartLine</span><span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">protocol</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateStartLine</span><span class="o">(</span><span class="n">startLine</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateFileMessageBody</span><span class="o">(</span><span class="s">"/404.html"</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">ContentType</span><span class="o">.</span><span class="na">HTML</span><span class="o">.</span><span class="na">getType</span><span class="o">());</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getMessageBody</span><span class="o">().</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">buildCustomResponse</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">,</span> <span class="nc">HttpResponse</span> <span class="n">httpResponse</span><span class="o">,</span> <span class="nc">String</span> <span class="n">content</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">status</span> <span class="o">=</span> <span class="n">joinStatus</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusCode</span><span class="o">(),</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">OK</span><span class="o">.</span><span class="na">getHttpStatusMessage</span><span class="o">());</span>
+        <span class="nc">String</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">httpRequest</span><span class="o">.</span><span class="na">getProtocol</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">startLine</span> <span class="o">=</span> <span class="n">joinStartLine</span><span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">protocol</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateStartLine</span><span class="o">(</span><span class="n">startLine</span><span class="o">);</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">updateMessageBody</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">ContentType</span><span class="o">.</span><span class="na">HTML</span><span class="o">.</span><span class="na">getType</span><span class="o">());</span>
+        <span class="n">httpResponse</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_LENGTH</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">getMessageBody</span><span class="o">().</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.URL</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.Files</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpResponse</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">KEY_VALUE_DELIMITER</span> <span class="o">=</span> <span class="s">"="</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">LINE_FEED</span> <span class="o">=</span> <span class="s">"\r\n"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">SPACE</span> <span class="o">=</span> <span class="s">" "</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">STATIC_DIRECTORY</span> <span class="o">=</span> <span class="s">"static"</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">startLine</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Header</span><span class="o">&gt;</span> <span class="n">headers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">messageBody</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateStartLine</span><span class="o">(</span><span class="nc">String</span> <span class="n">startLine</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">startLine</span> <span class="o">=</span> <span class="n">startLine</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateMessageBody</span><span class="o">(</span><span class="nc">String</span> <span class="n">messageBody</span><span class="o">)</span>  <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">messageBody</span> <span class="o">=</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateFileMessageBody</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="no">URL</span> <span class="n">resource</span> <span class="o">=</span> <span class="n">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">().</span><span class="na">getResource</span><span class="o">(</span><span class="no">STATIC_DIRECTORY</span> <span class="o">+</span> <span class="n">path</span><span class="o">);</span>
+        <span class="n">messageBody</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="nc">Files</span><span class="o">.</span><span class="na">readAllBytes</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">resource</span><span class="o">.</span><span class="na">getFile</span><span class="o">()).</span><span class="na">toPath</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addHeader</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Header</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="na">computeIfAbsent</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">ignore</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">CommaSeperatedHeader</span><span class="o">());</span>
+        <span class="n">header</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addHeader</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Header</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="na">computeIfAbsent</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">ignore</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">CommaSeperatedHeader</span><span class="o">());</span>
+        <span class="n">header</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">values</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCookie</span><span class="o">(</span><span class="nc">String</span> <span class="n">key</span><span class="o">,</span> <span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Header</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="na">computeIfAbsent</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">COOKIE</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">ignore</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">SemicolonSeperatedHeader</span><span class="o">());</span>
+        <span class="n">header</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span> <span class="o">+</span> <span class="no">KEY_VALUE_DELIMITER</span> <span class="o">+</span> <span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">joinResponse</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span> <span class="o">+</span>
+                <span class="n">joinCookie</span><span class="o">()</span> <span class="o">+</span>
+                <span class="n">joinHeaderWithoutCookie</span><span class="o">()</span> <span class="o">+</span>
+                <span class="no">LINE_FEED</span> <span class="o">+</span>
+                <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">joinHeaderWithoutCookie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">headersWithoutCookie</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">headers</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">stream</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="o">!</span><span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">COOKIE</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">entry</span> <span class="o">-&gt;</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">+</span> <span class="s">": "</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getValues</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">reduce</span><span class="o">((</span><span class="n">header1</span><span class="o">,</span> <span class="n">header2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">header1</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span> <span class="n">header2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">headersWithoutCookie</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="nf">joinCookie</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isStaticPath</span><span class="o">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">headers</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">COOKIE</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">""</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">String</span> <span class="n">cookieHeader</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">COOKIE</span><span class="o">.</span><span class="na">getName</span><span class="o">()).</span><span class="na">getValues</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">cookieHeaderResponse</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">cookieHeader</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"; "</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">line</span> <span class="o">-&gt;</span> <span class="s">"Set-Cookie: "</span> <span class="o">+</span> <span class="n">line</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">reduce</span><span class="o">((</span><span class="n">cookie1</span><span class="o">,</span> <span class="n">cookie2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">cookie1</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span> <span class="o">+</span> <span class="n">cookie2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">orElse</span><span class="o">(</span><span class="s">""</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">cookieHeaderResponse</span> <span class="o">+</span> <span class="no">SPACE</span> <span class="o">+</span> <span class="no">LINE_FEED</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isStaticPath</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">HttpHeader</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getName</span><span class="o">()).</span><span class="na">getValues</span><span class="o">();</span>
+        <span class="k">return</span> <span class="nc">ContentType</span><span class="o">.</span><span class="na">isStaticFile</span><span class="o">(</span><span class="n">contentType</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getStartLine</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">startLine</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Header</span><span class="o">&gt;</span> <span class="nf">getHeaders</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">headers</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getMessageBody</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">messageBody</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Header</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">values</span><span class="o">;</span>
+
+    <span class="kd">protected</span> <span class="nf">Header</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">values</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addAll</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">values</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">values</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">abstract</span> <span class="nc">String</span> <span class="nf">getValues</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommaSeperatedHeader</span> <span class="kd">extends</span> <span class="nc">Header</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="nf">CommaSeperatedHeader</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="nc">String</span> <span class="nf">getValues</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">", "</span><span class="o">,</span> <span class="n">values</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SemicolonSeperatedHeader</span> <span class="kd">extends</span> <span class="nc">Header</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="nf">SemicolonSeperatedHeader</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="nc">String</span> <span class="nf">getValues</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">"; "</span><span class="o">,</span> <span class="n">values</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div></div></details><h3 id="frontcontroller-controller-분리">FrontController, Controller 분리</h3><p>그렇게 request와 response 부분을 분리하니 앞뒤는 깔끔했지만 중간 부분이 굉장히 더러웠다. 특히 엄청나게 많은 분기문 + if 중첩문이 합쳐져서 가독성이 매우 구렸다. 이를 해결하기 위해서는 method와 path에 따라 해당 로직을 처리해주는 클래스를 매핑해주는 객체가 필요했다. 그리고 이 객체가 반환해 주는 클래스를 추상화한 객체까지.<p>그렇게 여러 분기의 Controller와 이 Controller를 공통화할 Controller Interface, 이 컨트롤러를 매핑해줄 객체가 생성되었다. 매핑해주는 객체 이름을 FrontController으로 지은 이유는 여러 Controller 앞에서 요청을 받아서 해당 Controller로 매핑해주기 때문이었다. <details> <summary>FrontController, Controller 코드</summary><div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">nextstep.jwp.presentation.handler</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.LoginController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.NotFoundController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.RegisterController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.RootController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.StaticController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpRequest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrontController</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="no">STATIC_PATH</span> <span class="o">=</span> <span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">".css"</span><span class="o">,</span> <span class="s">".js"</span><span class="o">,</span> <span class="s">".ico"</span><span class="o">,</span> <span class="s">".html"</span><span class="o">,</span> <span class="s">".svg"</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Controller</span> <span class="no">NOT_FOUND_CONTROLLER</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NotFoundController</span><span class="o">();</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Controller</span> <span class="no">STATIC_CONTROLLER</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StaticController</span><span class="o">();</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Controller</span><span class="o">&gt;</span> <span class="n">mappingControllers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+
+    <span class="kd">public</span> <span class="nf">FrontController</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">mappingControllers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">RootController</span><span class="o">());</span>
+        <span class="n">mappingControllers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/login"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">LoginController</span><span class="o">());</span>
+        <span class="n">mappingControllers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/register"</span><span class="o">,</span> <span class="k">new</span> <span class="nc">RegisterController</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Controller</span> <span class="nf">handle</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">path</span> <span class="o">=</span> <span class="n">httpRequest</span><span class="o">.</span><span class="na">getPath</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isStaticPath</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="no">STATIC_CONTROLLER</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">mappingControllers</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">path</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">mappingControllers</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="no">NOT_FOUND_CONTROLLER</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isStaticPath</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="no">STATIC_PATH</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">anyMatch</span><span class="o">(</span><span class="nl">path:</span><span class="o">:</span><span class="n">endsWith</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kn">package</span> <span class="nn">nextstep.jwp.presentation</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpResponse</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Controller</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">HttpRequest</span> <span class="n">httpRequest</span><span class="o">,</span> <span class="nc">HttpResponse</span> <span class="n">httpResponse</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div></div></details><h3 id="하나씩-분리한-결과">하나씩 분리한 결과</h3><p>이렇게 하나하나 책임을 나눠주기 위해 분리한 결과 엄청나게 뚱뚱하던 Processor가 다음과 같이 성공적으로 다이어트를 하게 되었다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.coyote.http11</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">nextstep.jwp.exception.UncheckedServletException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">nextstep.jwp.presentation.handler.FrontController</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.Processor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpRequestParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.coyote.http.HttpResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Http11Processor</span> <span class="kd">implements</span> <span class="nc">Runnable</span><span class="o">,</span> <span class="nc">Processor</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">Http11Processor</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">FrontController</span> <span class="no">FRONT_CONTROLLER</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FrontController</span><span class="o">();</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">HttpRequestParser</span> <span class="no">HTTP_REQUEST_PARSER</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpRequestParser</span><span class="o">();</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Http11Processor</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">=</span> <span class="n">connection</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"connect host: {}, port: {}"</span><span class="o">,</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInetAddress</span><span class="o">(),</span> <span class="n">connection</span><span class="o">.</span><span class="na">getPort</span><span class="o">());</span>
+        <span class="n">process</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Socket</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="kt">var</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+             <span class="kd">final</span> <span class="kt">var</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">HttpRequest</span> <span class="n">httpRequest</span> <span class="o">=</span> <span class="no">HTTP_REQUEST_PARSER</span><span class="o">.</span><span class="na">convertToHttpRequest</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
+            <span class="nc">HttpResponse</span> <span class="n">httpResponse</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpResponse</span><span class="o">();</span>
+
+            <span class="nc">Controller</span> <span class="n">controller</span> <span class="o">=</span> <span class="no">FRONT_CONTROLLER</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">);</span>
+            <span class="n">controller</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">httpRequest</span><span class="o">,</span> <span class="n">httpResponse</span><span class="o">);</span>
+
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">httpResponse</span><span class="o">.</span><span class="na">joinResponse</span><span class="o">().</span><span class="na">getBytes</span><span class="o">());</span>
+            <span class="n">outputStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">UncheckedServletException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><p>현재 분리한 나의 구조는 다음과 같다.<p><img src="/assets/img/blog/woowacourse/tom_5.png" alt="" /><p>근데 이렇게 하나하나 분리해서 구현하다 보니깐 자연스럽게 Servlet의 구조와 비슷하게 되는 것 같았다. 이미 머리가 스프링에 너무 절여져서 그런가…? 뭐가 되었든 굉장히 의미있는 경험이었고 Tomcat과 좀 더 친해진 거 같다. 벌써부터 다음 미션인 MVC 구현하기가 매우 기대된다. 🤗<h2 id="실제-톰캣은-어떻게-구현되어-있을까">실제 톰캣은 어떻게 구현되어 있을까?</h2><p>미션을 시작할 때 톰캣을 보지 않고 구현하고 나중에 실제 톰캣 코드와 비교해 보고 싶었다. 과연 실제 톰캣은 어떻게 구현되어 있을까? 내가 처리한 것들을 어떻게 효율적으로 처리하고 있는지, 엣지 케이스는 어떻게 처리해 주고 있는지 궁금했다.<p><img src="/assets/img/blog/woowacourse/tom_6.png" alt="" /><p>우선 톰캣 패키지를 보면 Catalina, Coyote 패키지가 있다. Catalina 패키지는 서블릿 컨테이너 역할을 하며, Coyote 패키지는 톰캣에 TCP를 통한 프로토콜을 지원하는 역할을 한다.<p>처음에 요청이 들어오면 Connector를 통해 연결이 되고 Coyote 패키지의 Http11Processor 클래스 service() 메서드가 실행이 된다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Http11Processor</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">SocketState</span> <span class="nf">service</span><span class="o">(</span><span class="nc">SocketWrapperBase</span><span class="o">&lt;?&gt;</span> <span class="n">socketWrapper</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+
+        <span class="n">parse</span><span class="o">();</span>
+
+        <span class="o">...</span>
+
+        <span class="n">getAdapter</span><span class="o">().</span><span class="na">service</span><span class="o">(</span><span class="n">reuqest</span><span class="o">,</span> <span class="n">reaponse</span><span class="o">);</span>
+
+        <span class="o">...</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div><p>요청으로 들어온 부분에 대해 파싱이 일어나고 그리고 getAdapter().service(request, response) 메서드를 호출한다. 해당 메서드를 호출하게 되면 Catalina 패키지에 있는 StandardWrapperValve 클래스의 invoke() 메서드가 실행되게 되고 다음과 같은 로직을 통해 알맞은 서블릿을 할당한다. StandardWrapperValve 클래스는 개별 서블릿 정의를 나타내는 Wrapper 인터페이스의 표준 구현이다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">StandardWrapperValve</span> <span class="o">{</span>
+    <span class="c1">// Allocate a servlet instance to process this request</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Request</span> <span class="n">request</span><span class="o">,</span> <span class="nc">Response</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">ServletException</span> <span class="o">{</span>
+        <span class="o">...</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">unavailable</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">servlet</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="na">allocate</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="o">...</span>
+        <span class="o">}</span>
+        <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div><p>이렇게 서블릿을 할당하고 나면 해당 요청에 대한 filter chain을 호출한다. 해당 filter chain을 호출했을 때 다음에 호출할 필터가 있으면 계속해서 호출하며 작업을 처리하고 없으면 할당된 servlet의 service() 메서드를 실행하며 마무리한다. 그렇게 서블릿의 해당 로직을 처리하고 나서 응답을 반환하면 끝이 난다.<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="c1">// Call the filter chain for this request</span>
+        <span class="c1">// NOTE: This also calls the servlet's service() method</span>
+        <span class="nc">Container</span> <span class="n">container</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">container</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">((</span><span class="n">servlet</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">filterChain</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">))</span> <span class="o">{</span>
+                <span class="c1">// Swallow output if needed</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getSwallowOutput</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="k">try</span> <span class="o">{</span>
+                        <span class="nc">SystemLogHandler</span><span class="o">.</span><span class="na">startCapture</span><span class="o">();</span>
+                        <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">isAsyncDispatching</span><span class="o">())</span> <span class="o">{</span>
+                            <span class="n">request</span><span class="o">.</span><span class="na">getAsyncContextInternal</span><span class="o">().</span><span class="na">doInternalDispatch</span><span class="o">();</span>
+                        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                            <span class="n">filterChain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getRequest</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">getResponse</span><span class="o">());</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                        <span class="nc">String</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">SystemLogHandler</span><span class="o">.</span><span class="na">stopCapture</span><span class="o">();</span>
+                        <span class="k">if</span> <span class="o">(</span><span class="n">log</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">log</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">context</span><span class="o">.</span><span class="na">getLogger</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="n">log</span><span class="o">);</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">isAsyncDispatching</span><span class="o">())</span> <span class="o">{</span>
+                        <span class="n">request</span><span class="o">.</span><span class="na">getAsyncContextInternal</span><span class="o">().</span><span class="na">doInternalDispatch</span><span class="o">();</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="n">filterChain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getRequest</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">getResponse</span><span class="o">());</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="o">...</span>
+</code></pre></div></div><p>해당 과정을 간단하게 그림으로 나타내면 다음과 같다.<p><img src="/assets/img/blog/woowacourse/tom_7.png" alt="" /><p>실제 구현되어 있는 톰캣과 흐름을 비교해 보면 비슷한 걸 확인할 수 있다. 근데 실제 톰캣 코드를 보다 보면 코드가 굉장히 길고 지저분한 걸 볼 수 있다. 대형 오픈소스 프로젝트니 어쩔 수 없겠지만 과정을 하나하나 추적하며 직접 찾아보는 게 너무 힘들었다ㅜㅜ 내가 FrontController라고 지은 객체는 톰캣에서는 Container(참고로, StandardWrapper가 Container 인터페이스를 implements 하고 있다) 와 Controller는 Servlet과 대칭되고 있는걸 확인할 수 있었다. 나는 이미 스프링에 머리 절여진 것 확인 🫠<h2 id="톰캣-컨트리뷰트">톰캣 컨트리뷰트</h2><p>코드를 분석 하는데 솔직히 말하면 코드가 정말 가독성이 좋지 않아 보기 힘들었다. 이미 오픈소스 프로젝트를 참여하고 있어서 오픈 소스 코드나 문화에 대해 익숙했기 때문에 톰캣 오픈소스도 기여해 볼 수 있지 않을까 생각했다.<p>그래서 이전에 보다가 조금 불편한 부분인 상수 컨벤션 불일치와 스위치문에 매직 넘버 사용 부분을 리팩터링 해 PR을 제출했다.<ul><li><a href="https://github.com/apache/tomcat/pull/659">Unify constant delimiters and Refactoring for better readability</a></ul><p><img src="/assets/img/blog/woowacourse/tom_8.png" alt="" /><p>상수 컨벤션을 변경하면 3rd-party와 통합이 중단될 위험성도 있기 때문에 정말 타당한 이유가 없는 한은 변경하고 싶지 않다고 하여 상수 컨벤션 부분은 롤백 하였다. 하지만, 매직 넘버 부분은 받아들여져 결국 Merge가 되었다! 물론 오픈소스에 처음으로 기여한 것은 아니라 미친 듯이 설렌 건 아니지만 그래도 숨길 수 없는 입꼬리.. 🫢<hr /><p>참고:<ul><li><a href="https://jeoninpyo726.tistory.com/81">톰캣 컨트리뷰터 전비버</a></ul><p>*틀린 부분이 있으면 언제든지 말씀해 주시면 공부해서 수정하겠습니다.</article><hr class="dingbat related mb6" /> <script async src="https://www.googletagmanager.com/gtag/js?id=G-T765T1JLEW"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-T765T1JLEW'); </script><aside class="about related mt4 mb4" role="complementary"><div class="author mt4"><h2 class="page-title hr-bottom"> About</h2><p>반갑습니다. 백엔드 개발자 박무현입니다.<div class="sidebar-social"> <span class="sr-only">Social:</span><ul><li> <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external"> <span class="icon-github"></span> <span class="sr-only">GitHub</span> </a><li> <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external"> <span class="icon-mail"></span> <span class="sr-only">Email</span> </a><li> <a href="https://parkmuhyeun.github.io/feed.xml" title="RSS" class="no-mark-external"> <span class="icon-rss2"></span> <span class="sr-only">RSS</span> </a></ul></div></div></aside><aside class="related mb4" role="complementary"><h2 class="hr-bottom">Related Posts</h2><ul class="related-posts"><li class="h4"> <a href="/study/it%20infra/2024-02-11-docker/" class="flip-title"><span>도커를 응용하기 위한 작동 원리 및 베이스들</span></a> <time class="faded fine" datetime="2024-02-11T00:00:00+00:00">11 Feb 2024</time><li class="h4"> <a href="/etc/seminar/2023-12-28-observability/" class="flip-title"><span>수백 개의 분산 서비스에서 Observability 시스템 구축하기</span></a> <time class="faded fine" datetime="2023-12-28T00:00:00+00:00">28 Dec 2023</time><li class="h4"> <a href="/etc/java/2023-12-16-Domain/" class="flip-title"><span>도메인 완전성과 순수성(+도메인 모델과 영속 모델 분리)</span></a> <time class="faded fine" datetime="2023-12-16T00:00:00+00:00">16 Dec 2023</time></ul></aside><aside class="comments related" role="complementary"><h2>Comments</h2><script src="https://utteranc.es/client.js" repo="parkmuhyeun/blog-comments-repo" issue-term="pathname" theme="github-light" crossorigin="anonymous" async> </script></aside><footer class="content" role="contentinfo"><hr/><p><small class="copyright">© 2022. All rights reserved. </small><p><small>Powered by 애송이</small><hr class="sr-only"/></footer></main><hy-drawer id="_drawer" class="" side="left" threshold="10" noscroll ><header id="_sidebar" class="sidebar" role="banner"><div class="sidebar-bg sidebar-overlay" style="background-color:rgb(8,46,57);background-image:url(/assets/img/sidebar-bg.jpg)"></div><div class="sidebar-sticky"><div class="sidebar-about"><div class="sidebar-title" style="margin-bottom: 45px;"> <a class="sidebar-title" href="/"><h2 class="h1">애송이 개발 블로그</h2></a></div><a class="no-hover" href="/" tabindex="-1"> <img src="/assets/img/logo.jpg" class="avatar" alt="애송이 개발 블로그" width="120" height="120" loading="lazy" /> </a><p class=""> 끊임없이 생각하고 나아가는 개발자</div><nav class="sidebar-nav heading" role="navigation"> <span class="sr-only">Navigation:</span><ul><li> <a id="_drawer--opened" href="/about/" class="sidebar-nav-item " > About </a><li> <a href="/study/" class="sidebar-nav-item " > Study </a><li> <a href="/etc/" class="sidebar-nav-item " > Etc </a><li> <a href="/woowacourse/" class="sidebar-nav-item " > 우테코 5기 </a></ul></nav><div class="sidebar-social"> <span class="sr-only">Social:</span><ul><li> <a href="https://github.com/parkmuhyeun" title="GitHub" class="no-mark-external"> <span class="icon-github"></span> <span class="sr-only">GitHub</span> </a><li> <a href="mailto:pjhg410@gmail.com" title="Email" class="no-mark-external"> <span class="icon-mail"></span> <span class="sr-only">Email</span> </a><li> <a href="https://parkmuhyeun.github.io/feed.xml" title="RSS" class="no-mark-external"> <span class="icon-rss2"></span> <span class="sr-only">RSS</span> </a></ul></div></div></header></hy-drawer><hr class="sr-only" hidden /> </hy-push-state> <!--[if gt IE 10]><!----> <script nomodule>!function(){var t,n=document.createElement("script");!("noModule"in n)&&"onbeforeload"in n&&(t=!1,document.addEventListener("beforeload",function(e){if(e.target===n)t=!0;else if(!e.target.hasAttribute("nomodule")||!t)return;e.preventDefault()},!0),n.type="module",n.src=".",document.head.appendChild(n),n.remove())}(); </script> <script src="/assets/js/hydejack-9.1.5.js" type="module"></script> <script src="/assets/js/LEGACY-hydejack-9.1.5.js" nomodule defer></script> <script>!function(w, d) { w.ga=w.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date; /**/ ga('create', 'G-T765T1JLEW', 'auto'); /**/ var pushStateEl = d.getElementById('_pushState'); var timeoutId; pushStateEl.addEventListener('hy-push-state-load', function() { w.clearTimeout(timeoutId); timeoutId = w.setTimeout(function() { ga('set', 'page', w.location.pathname); ga('send', 'pageview'); }, 500); }); d.addEventListener('hy--cookies-ok', function () { w.ga(function(tracker) { w.ga("set", "anonymizeIp", undefined); localStorage && localStorage.setItem("ga--client-id", tracker.get("clientId")); }); }); w.loadJSDeferred('https://www.google-analytics.com/analytics.js'); }(window, document);</script> <!--<![endif]--><div hidden><h2 class="sr-only">Templates (for web app):</h2><clap-config> <clap-text at="1">Keep going!</clap-text> <clap-text at="2">Keep going ×2!</clap-text> <clap-text at="3">Give me more!</clap-text> <clap-text at="5">Thank you, thank you</clap-text> <clap-text at="7">Far too kind!</clap-text> <clap-text at="10">Never gonna give me up?</clap-text> <clap-text at="14">Never gonna let me down?</clap-text> <clap-text at="20">Turn around and desert me!</clap-text> <clap-text at="30">You're an addict!</clap-text> <clap-text at="40">Son of a clapper!</clap-text> <clap-text at="50">No way</clap-text> <clap-text at="60">Go back to work!</clap-text> <clap-text at="70">This is getting out of <em>hand</em></clap-text> <clap-text at="80">Unbelievable</clap-text> <clap-text at="90">PREPOSTEROUS</clap-text> <clap-text at="100">I N S A N I T Y</clap-text> <clap-text at="185"><span style="font-family:monospace">FEED ME A STRAY CAT</span></clap-text> </clap-config> <template id="_animation-template"><div class="animation-main fixed-top"><nav id="breadcrumbs" class="screen-only"><ul></ul></nav><div class="content"><div class="page"></div></div></div></template> <template id="_loading-template"><div class="loading nav-btn fr"> <span class="sr-only">Loading…</span> <span class="icon-cog"></span></div></template> <template id="_error-template"><div class="page"><h1 class="page-title">Error</h1><p class="lead"> Sorry, an error occurred while loading <a class="this-link" href=""></a>.</div></template> <template id="_permalink-template"> <a href="#" class="permalink"> <span class="sr-only">Permalink</span> <span class="content-hash"></span> </a> </template></div></html>
